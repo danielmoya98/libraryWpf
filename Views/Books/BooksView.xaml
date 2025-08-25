@@ -1,12 +1,63 @@
 <UserControl x:Class="library.Views.Books.BooksView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:library.Views.Books"
-             mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:converters="clr-namespace:library.Converters"
+             xmlns:controls="clr-namespace:library.Controls">
+
+    <UserControl.Resources>
+        <!-- Reutiliza los estilos del CustomersTable -->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Ajusta la ruta si pusiste el diccionario en otra carpeta -->
+                <ResourceDictionary Source="/Resources/Themes/CustomersTable.Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converter para la portada (el mismo que ya usas) -->
+            <converters:SafeImageSourceConverter x:Key="SafeImg" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <controls:StatsSummary Grid.Row="0" ItemsSource="{Binding Stats}" />
+
+        <materialDesign:Card Margin="2 8 4 8"
+                             Background="White"
+                             Grid.Row="1"
+                             UniformCornerRadius="10"
+                             BorderBrush="#E8EDF2"
+                             BorderThickness="1"
+                             VerticalAlignment="Stretch">
+
+            <!-- Contenido del Card -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/> <!-- Header -->
+                    <RowDefinition Height="*"/>    <!-- Tabla -->
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <controls:BooksHeader Grid.Row="0"
+                                      AddBookCommand="{Binding AddBookAsyncCommand}"
+                                      GenerateReportCommand="{Binding GenerateBooksReportCommand}"
+                                      Availability="{Binding Availability, Mode=TwoWay}"
+                                      SelectedGenre="{Binding SelectedGenre, Mode=TwoWay}"
+                                      MinRating="{Binding MinRating, Mode=TwoWay}" />
+
+                <!-- Tabla -->
+                <controls:BooksTable Grid.Row="1"
+                                     VerticalAlignment="Stretch"
+                                     HorizontalAlignment="Stretch"/>
+            </Grid>
+        </materialDesign:Card>
+
     </Grid>
+
 </UserControl>

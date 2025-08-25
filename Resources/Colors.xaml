@@ -1,4 +1,12 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+    <!-- Colores del rail estilo “navy” + acento verde -->
+    <Color x:Key="Brand.Navy">#0E2A35</Color>
+    <Color x:Key="Brand.NavyDark">#0A212B</Color>
+    <Color x:Key="Brand.Accent">#21C08B</Color>
+    <SolidColorBrush x:Key="Brush.Navy" Color="{StaticResource Brand.Navy}"/>
+    <SolidColorBrush x:Key="Brush.NavyDark" Color="{StaticResource Brand.NavyDark}"/>
+    <SolidColorBrush x:Key="Brush.Accent" Color="{StaticResource Brand.Accent}"/>
+    <SolidColorBrush x:Key="Brush.OnNavy" Color="#F0FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.Border" Color="#22000000"/>
 </ResourceDictionary>

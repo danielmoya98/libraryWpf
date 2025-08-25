@@ -1,4 +1,35 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+  <!-- Botón del sidebar: icono centrado, sin texto -->
+  <Style x:Key="NavRailButtonStyle" TargetType="Button">
+    <Setter Property="Foreground" Value="{StaticResource Brush.OnNavy}"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Width" Value="48"/>
+    <Setter Property="Height" Value="48"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Grid>
+            <Border x:Name="bg" CornerRadius="12" Background="Transparent"/>
+            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <!-- Indicador de selección (pill a la derecha) -->
+            <Border x:Name="indicator" Width="4" Margin="0,8,4,8"
+                    Background="{StaticResource Brush.Accent}"
+                    CornerRadius="4" HorizontalAlignment="Right" Opacity="0"/>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="bg" Property="Background" Value="#14FFFFFF"/>
+            </Trigger>
+            <!-- Se activa vía Binding a IsActive del item -->
+            <DataTrigger Binding="{Binding IsActive}" Value="True">
+              <Setter TargetName="indicator" Property="Opacity" Value="1"/>
+              <Setter TargetName="bg" Property="Background" Value="#1EFFFFFF"/>
+            </DataTrigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
 </ResourceDictionary>

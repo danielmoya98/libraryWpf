@@ -1,6 +1,7 @@
-namespace library.Abstractions;
-
-public class ISearchable
+namespace library.Abstractions
 {
-    
+    public interface ISearchable
+    {
+        void SetSearch(string? text);
+    }
 }

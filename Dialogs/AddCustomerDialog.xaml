@@ -1,12 +1,230 @@
+<!-- Dialogs/AddCustomerDialog.xaml -->
 <UserControl x:Class="library.Dialogs.AddCustomerDialog"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:library.Dialogs"
-             mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:models="clr-namespace:library.Models"
+             xmlns:conv="clr-namespace:library.Converters"
+             MinWidth="560" MaxWidth="720">
+
+  <!-- ================== RESOURCES ================== -->
+  <UserControl.Resources>
+    <!-- converter seguro para imágenes -->
+    <conv:SafeImageSourceConverter x:Key="SafeImg"/>
+
+    <!-- Botones píldora -->
+    <SolidColorBrush x:Key="BtnPrimary"       Color="#5B6BFE"/>
+    <SolidColorBrush x:Key="BtnPrimaryHover"  Color="#4C59E8"/>
+    <SolidColorBrush x:Key="BtnOutlineBorder" Color="#E5E9F0"/>
+    <SolidColorBrush x:Key="BtnOutlineHover"  Color="#F6F8FF"/>
+
+    <Style x:Key="PillButtonBase" TargetType="Button">
+      <Setter Property="Height" Value="36"/>
+      <Setter Property="MinWidth" Value="140"/>
+      <Setter Property="Padding" Value="12,0"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="{StaticResource BtnOutlineBorder}"/>
+      <Setter Property="Foreground" Value="#1F2937"/>
+      <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="bd" CornerRadius="18"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="{StaticResource BtnOutlineHover}"/>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.55"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="PillPrimaryButton" TargetType="Button" BasedOn="{StaticResource PillButtonBase}">
+      <Setter Property="Background"  Value="{StaticResource BtnPrimary}"/>
+      <Setter Property="BorderBrush" Value="{StaticResource BtnPrimary}"/>
+      <Setter Property="Foreground"  Value="White"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="bd" CornerRadius="18"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="{StaticResource BtnPrimaryHover}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="PillOutlineButton" TargetType="Button" BasedOn="{StaticResource PillButtonBase}" />
+  </UserControl.Resources>
+
+  <!-- ================== CONTENT ================== -->
+  <Border Padding="24,20,24,16">
     <Grid>
-        
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+
+      <!-- Título -->
+      <TextBlock Grid.Row="0" Text="Agregar cliente"
+                 FontSize="20" FontWeight="SemiBold" Margin="4,0,4,16"
+                 Foreground="#243147"/>
+
+      <!-- Contenido -->
+      <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="148"/>
+          <ColumnDefinition Width="16"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Avatar + botón -->
+        <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+          <Grid Width="112" Height="112">
+            <!-- fondo -->
+            <Ellipse Fill="#EDF2F7"/>
+            <!-- Foto (solo si hay ruta válida) -->
+            <Ellipse>
+              <Ellipse.Style>
+                <Style TargetType="Ellipse">
+                  <Setter Property="Visibility" Value="Visible"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding PhotoPath}" Value="{x:Null}">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding PhotoPath}" Value="">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </Ellipse.Style>
+              <Ellipse.Fill>
+                <ImageBrush Stretch="UniformToFill"
+                            ImageSource="{Binding PhotoPath, Converter={StaticResource SafeImg}}"/>
+              </Ellipse.Fill>
+            </Ellipse>
+            <!-- Placeholder con ícono si no hay foto -->
+            <mah:PackIconMaterial Kind="AccountCircle" Width="64" Height="64" Foreground="#B0B9C6">
+              <mah:PackIconMaterial.Style>
+                <Style TargetType="mah:PackIconMaterial">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding PhotoPath}" Value="{x:Null}">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding PhotoPath}" Value="">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </mah:PackIconMaterial.Style>
+            </mah:PackIconMaterial>
+          </Grid>
+
+          <Button Style="{StaticResource PillOutlineButton}" Margin="0,12,0,0"
+                  Command="{Binding BrowseImageCommand}">
+            <StackPanel Orientation="Horizontal">
+              <mah:PackIconMaterial Kind="ImagePlus" Width="18" Height="18" Margin="0,0,8,0"/>
+              <TextBlock Text="Cambiar foto"/>
+            </StackPanel>
+          </Button>
+        </StackPanel>
+
+        <!-- Formulario -->
+        <Grid Grid.Column="2">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+
+          <TextBox Grid.Row="0" Grid.ColumnSpan="2"
+                   materialDesign:HintAssist.Hint="Cédula de Identidad"
+                   Text="{Binding Ci}" Margin="0,0,0,10"/>
+
+          <TextBox Grid.Row="1" Grid.Column="0"
+                   materialDesign:HintAssist.Hint="Nombre"
+                   Text="{Binding FirstName}" Margin="0,0,8,10"/>
+          <TextBox Grid.Row="1" Grid.Column="1"
+                   materialDesign:HintAssist.Hint="Apellido"
+                   Text="{Binding LastName}" Margin="8,0,0,10"/>
+
+          <TextBox Grid.Row="2" Grid.ColumnSpan="2"
+                   materialDesign:HintAssist.Hint="Email"
+                   Text="{Binding Email}" Margin="0,0,0,10"/>
+
+          <TextBox Grid.Row="3" Grid.Column="0"
+                   materialDesign:HintAssist.Hint="Teléfono"
+                   Text="{Binding Phone}" Margin="0,0,8,10"/>
+          <TextBox Grid.Row="3" Grid.Column="1"
+                   materialDesign:HintAssist.Hint="Usuario"
+                   Text="{Binding Username}" Margin="8,0,0,10"/>
+
+          <PasswordBox Grid.Row="4" Grid.Column="0" Margin="0,0,8,10"
+                       materialDesign:HintAssist.Hint="Contraseña"/>
+          <TextBox Grid.Row="4" Grid.Column="1" Margin="8,0,0,10"
+                   materialDesign:HintAssist.Hint="Dirección"
+                   Text="{Binding Address}"/>
+
+          <ComboBox Grid.Row="5" Grid.ColumnSpan="2" Margin="0,0,0,10"
+                    ItemsSource="{Binding Genders}"
+                    SelectedItem="{Binding Gender}"
+                    materialDesign:HintAssist.Hint="Género"/>
+        </Grid>
+      </Grid>
+
+      <!-- Footer: Cancelar / Guardar -->
+      <DockPanel Grid.Row="2" LastChildFill="False" Margin="0,12,0,0">
+        <Button Style="{StaticResource PillPrimaryButton}" DockPanel.Dock="Right"
+                IsEnabled="{Binding IsValid}"
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                CommandParameter="{Binding}">
+          <StackPanel Orientation="Horizontal">
+            <mah:PackIconMaterial Kind="ContentSaveOutline" Width="18" Height="18" Margin="0,0,8,0"/>
+            <TextBlock Text="Guardar"/>
+          </StackPanel>
+        </Button>
+
+        <Button Style="{StaticResource PillOutlineButton}" DockPanel.Dock="Right" Margin="8,0,0,0"
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                CommandParameter="{x:Null}">
+          <StackPanel Orientation="Horizontal">
+            <mah:PackIconMaterial Kind="Close" Width="18" Height="18" Margin="0,0,8,0"/>
+            <TextBlock Text="Cancelar"/>
+          </StackPanel>
+        </Button>
+      </DockPanel>
     </Grid>
+  </Border>
 </UserControl>

@@ -1,12 +1,86 @@
 <UserControl x:Class="library.Controls.BooksHeader"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:library.Controls"
-             mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        
-    </Grid>
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:views="clr-namespace:library.Controls"
+             x:Name="root"
+             HorizontalAlignment="Stretch"
+             Loaded="OnHeaderLoaded"
+             SizeChanged="OnHeaderSizeChanged">
+
+  <!-- Reutiliza estilos (colores, botones, etc.) -->
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Resources/Themes/CustomersTable.Styles.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Título -->
+    <StackPanel Orientation="Horizontal">
+      <TextBlock Text="Libros" FontWeight="SemiBold" Margin="10" FontSize="16"
+                 Foreground="{StaticResource TitleFg}"/>
+      <mah:PackIconMaterial Kind="ArrowTopRight" Width="12" Height="12" VerticalAlignment="Center"/>
+    </StackPanel>
+
+    <!-- Filtros + Botones -->
+    <WrapPanel x:Name="RightPanel"
+               Grid.Column="1"
+               VerticalAlignment="Center"
+               Margin="10,6,10,6"
+               ItemHeight="36">
+
+      <!-- Disponibilidad -->
+      <ComboBox x:Name="cmbAvailability"
+                MinWidth="150" Width="160" Margin="0,0,8,0"
+                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=views:BooksHeader}, Path=AvailabilityItems}"
+                SelectedValuePath="Key"
+                DisplayMemberPath="Value"
+                SelectedValue="{Binding RelativeSource={RelativeSource AncestorType=views:BooksHeader}, Path=Availability, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                materialDesign:HintAssist.Hint="Disponibilidad"/>
+
+      <!-- Género -->
+      <ComboBox x:Name="cmbGenre"
+                MinWidth="160" Width="180" Margin="0,0,8,0"
+                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=views:BooksHeader}, Path=GenreItems}"
+                SelectedValuePath="Key"
+                DisplayMemberPath="Value"
+                SelectedValue="{Binding RelativeSource={RelativeSource AncestorType=views:BooksHeader}, Path=SelectedGenre, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                materialDesign:HintAssist.Hint="Género"/>
+
+      <!-- Calificación -->
+      <ComboBox x:Name="cmbRating"
+                MinWidth="150" Width="170" Margin="0,0,16,0"
+                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=views:BooksHeader}, Path=RatingItems}"
+                SelectedValuePath="Key"
+                DisplayMemberPath="Value"
+                SelectedValue="{Binding RelativeSource={RelativeSource AncestorType=views:BooksHeader}, Path=MinRating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                materialDesign:HintAssist.Hint="Calificación"/>
+
+      <!-- Agregar libro -->
+      <Button Margin="0,0,8,0"
+              Command="{Binding RelativeSource={RelativeSource AncestorType=views:BooksHeader}, Path=AddBookCommand}">
+        <StackPanel Orientation="Horizontal">
+          <mah:PackIconMaterial Kind="BookPlusOutline" Width="18" Height="18" Margin="0,0,8,0"/>
+          <TextBlock x:Name="txtAdd" Text="Agregar libro"/>
+        </StackPanel>
+      </Button>
+
+      <!-- Generar reporte -->
+      <Button Command="{Binding RelativeSource={RelativeSource AncestorType=views:BooksHeader}, Path=GenerateReportCommand}">
+        <StackPanel Orientation="Horizontal">
+          <mah:PackIconMaterial Kind="FileChartOutline" Width="18" Height="18" Margin="0,0,8,0"/>
+          <TextBlock x:Name="txtReport" Text="Generar reporte"/>
+        </StackPanel>
+      </Button>
+    </WrapPanel>
+  </Grid>
 </UserControl>
