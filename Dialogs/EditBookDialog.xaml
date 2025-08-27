@@ -10,13 +10,18 @@
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
+        <!-- (opcional) reusa estilos compartidos; los colores vendrán del theme -->
         <ResourceDictionary Source="../Resources/Themes/CustomersTable.Styles.xaml"/>
       </ResourceDictionary.MergedDictionaries>
       <converters:SafeImageSourceConverter x:Key="SafeImg"/>
     </ResourceDictionary>
   </UserControl.Resources>
 
-  <Border Padding="24" Background="White">
+  <Border Padding="24"
+          Background="{DynamicResource App.CardBrush}"
+          BorderBrush="{DynamicResource App.BorderBrush}"
+          BorderThickness="1"
+          CornerRadius="10">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
@@ -27,7 +32,8 @@
       <!-- Título -->
       <TextBlock Grid.Row="0"
                  Text="Editar libro"
-                 FontSize="20" FontWeight="SemiBold" Foreground="#243147"
+                 FontSize="20" FontWeight="SemiBold"
+                 Foreground="{DynamicResource App.TextPrimaryBrush}"
                  Margin="0,0,0,16"/>
 
       <!-- Cuerpo -->
@@ -40,14 +46,20 @@
 
         <!-- Columna izquierda: portada -->
         <Grid Grid.Column="0">
-          <Ellipse Fill="#0F000000" Width="220" Height="220"
+          <!-- halo suave -->
+          <Ellipse Width="220" Height="220"
+                   Fill="{DynamicResource App.DividerBrush}"
+                   Opacity="0.25"
                    HorizontalAlignment="Center" VerticalAlignment="Top"
                    Margin="0,12,0,0"/>
+
+          <!-- marco de portada -->
           <Border Width="240" Height="340"
                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                  CornerRadius="8" BorderBrush="#E2E8F0" BorderThickness="1"
-                  Background="#F6F8FB">
-            
+                  CornerRadius="8"
+                  BorderBrush="{DynamicResource App.BorderBrush}" BorderThickness="1"
+                  Background="{DynamicResource App.SurfaceBrush}">
+           
           </Border>
 
           <!-- URL de imagen (sincroniza preview) -->
@@ -59,7 +71,9 @@
         </Grid>
 
         <!-- Separador -->
-        <Rectangle Grid.Column="1" Width="1" Fill="#EDF1F7" HorizontalAlignment="Center"/>
+        <Rectangle Grid.Column="1" Width="1"
+                   Fill="{DynamicResource App.DividerBrush}"
+                   HorizontalAlignment="Center"/>
 
         <!-- Columna derecha: formulario -->
         <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
@@ -88,15 +102,14 @@
                       SelectedValue="{Binding SelectedGenre, Mode=TwoWay}"
                       materialDesign:HintAssist.Hint="Género"/>
 
-            <!-- Fila 1: Autor + Nuevo / Estado -->
+            <!-- Fila 1: Autor / Estado -->
             <Grid Grid.Row="1" Grid.Column="0" Margin="0,0,8,10">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
               </Grid.ColumnDefinitions>
-              <TextBox Grid.Column="0" materialDesign:HintAssist.Hint="Autor(es)"
+              <TextBox Grid.Column="0"
+                       materialDesign:HintAssist.Hint="Autor(es)"
                        Text="{Binding Author}"/>
-              
             </Grid>
 
             <ComboBox Grid.Row="1" Grid.Column="1" Margin="8,0,0,10"
@@ -128,7 +141,8 @@
             <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal"
                         Margin="8,6,0,10">
               <CheckBox IsChecked="{Binding Available}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-              <TextBlock Text="Disponible" VerticalAlignment="Center"/>
+              <TextBlock Text="Disponible" VerticalAlignment="Center"
+                         Foreground="{DynamicResource App.TextPrimaryBrush}"/>
             </StackPanel>
 
             <!-- Fila 5-6: Sinopsis -->

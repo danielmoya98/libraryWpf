@@ -7,18 +7,14 @@
              xmlns:controls="clr-namespace:library.Controls">
 
     <UserControl.Resources>
-        <!-- Reutiliza los estilos del CustomersTable -->
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!-- Ajusta la ruta si pusiste el diccionario en otra carpeta -->
-                <ResourceDictionary Source="/Resources/Themes/CustomersTable.Styles.xaml" />
+                <!-- Usa pack URI para evitar problemas de rutas relativas -->
+                <ResourceDictionary Source="pack://application:,,,/Resources/Themes/CustomersTable.Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <!-- Converter para la portada (el mismo que ya usas) -->
             <converters:SafeImageSourceConverter x:Key="SafeImg" />
         </ResourceDictionary>
     </UserControl.Resources>
-
 
     <Grid>
         <Grid.RowDefinitions>
@@ -26,24 +22,24 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!-- KPIs -->
         <controls:StatsSummary Grid.Row="0" ItemsSource="{Binding Stats}" />
 
-        <materialDesign:Card Margin="2 8 4 8"
-                             Background="White"
-                             Grid.Row="1"
+        <!-- Contenedor principal -->
+        <materialDesign:Card Grid.Row="1"
+                             Margin="2 8 4 8"
                              UniformCornerRadius="10"
-                             BorderBrush="#E8EDF2"
+                             Background="{DynamicResource App.CardBrush}"
+                             BorderBrush="{DynamicResource App.BorderBrush}"
                              BorderThickness="1"
                              VerticalAlignment="Stretch">
-
-            <!-- Contenido del Card -->
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/> <!-- Header -->
                     <RowDefinition Height="*"/>    <!-- Tabla -->
                 </Grid.RowDefinitions>
 
-                <!-- Header -->
+                <!-- Header de libros -->
                 <controls:BooksHeader Grid.Row="0"
                                       AddBookCommand="{Binding AddBookAsyncCommand}"
                                       GenerateReportCommand="{Binding GenerateBooksReportCommand}"
@@ -57,7 +53,5 @@
                                      HorizontalAlignment="Stretch"/>
             </Grid>
         </materialDesign:Card>
-
     </Grid>
-
 </UserControl>

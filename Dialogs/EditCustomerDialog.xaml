@@ -11,11 +11,7 @@
   <UserControl.Resources>
     <conv:SafeImageSourceConverter x:Key="SafeImg"/>
 
-    <SolidColorBrush x:Key="BtnPrimary"       Color="#5B6BFE"/>
-    <SolidColorBrush x:Key="BtnPrimaryHover"  Color="#4C59E8"/>
-    <SolidColorBrush x:Key="BtnOutlineBorder" Color="#E5E9F0"/>
-    <SolidColorBrush x:Key="BtnOutlineHover"  Color="#F6F8FF"/>
-
+    <!-- ===== Botones pill (dinámicos) ===== -->
     <Style x:Key="PillButtonBase" TargetType="Button">
       <Setter Property="Height" Value="36"/>
       <Setter Property="MinWidth" Value="140"/>
@@ -23,8 +19,8 @@
       <Setter Property="FontWeight" Value="SemiBold"/>
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="Background" Value="Transparent"/>
-      <Setter Property="BorderBrush" Value="{StaticResource BtnOutlineBorder}"/>
-      <Setter Property="Foreground" Value="#1F2937"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource App.BorderBrush}"/>
+      <Setter Property="Foreground" Value="{DynamicResource App.TextPrimaryBrush}"/>
       <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
       <Setter Property="Template">
         <Setter.Value>
@@ -37,7 +33,7 @@
             </Border>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="bd" Property="Background" Value="{StaticResource BtnOutlineHover}"/>
+                <Setter TargetName="bd" Property="Background" Value="{DynamicResource App.DividerBrush}"/>
               </Trigger>
               <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Opacity" Value="0.55"/>
@@ -49,8 +45,8 @@
     </Style>
 
     <Style x:Key="PillPrimaryButton" TargetType="Button" BasedOn="{StaticResource PillButtonBase}">
-      <Setter Property="Background"  Value="{StaticResource BtnPrimary}"/>
-      <Setter Property="BorderBrush" Value="{StaticResource BtnPrimary}"/>
+      <Setter Property="Background"  Value="{DynamicResource App.PrimaryBrush}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource App.PrimaryBrush}"/>
       <Setter Property="Foreground"  Value="White"/>
       <Setter Property="Template">
         <Setter.Value>
@@ -63,7 +59,7 @@
             </Border>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="bd" Property="Background" Value="{StaticResource BtnPrimaryHover}"/>
+                <Setter TargetName="bd" Property="Background" Value="{DynamicResource App.PrimaryHoverBrush}"/>
               </Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
@@ -75,7 +71,11 @@
   </UserControl.Resources>
 
   <!-- content -->
-  <Border Padding="24,20,24,16">
+  <Border Padding="24,20,24,16"
+          Background="{DynamicResource App.CardBrush}"
+          BorderBrush="{DynamicResource App.BorderBrush}"
+          BorderThickness="1"
+          CornerRadius="10">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
@@ -85,7 +85,7 @@
 
       <TextBlock Grid.Row="0" Text="Editar cliente"
                  FontSize="20" FontWeight="SemiBold" Margin="4,0,4,16"
-                 Foreground="#243147"/>
+                 Foreground="{DynamicResource App.TextPrimaryBrush}"/>
 
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
@@ -97,7 +97,10 @@
         <!-- avatar -->
         <StackPanel Grid.Column="0" HorizontalAlignment="Center">
           <Grid Width="112" Height="112">
-            <Ellipse Fill="#EDF2F7"/>
+            <!-- fondo suave -->
+            <Ellipse Fill="{DynamicResource App.DividerBrush}"/>
+
+            <!-- Foto -->
             <Ellipse>
               <Ellipse.Style>
                 <Style TargetType="Ellipse">
@@ -117,7 +120,10 @@
                             ImageSource="{Binding PhotoPath, Converter={StaticResource SafeImg}}"/>
               </Ellipse.Fill>
             </Ellipse>
-            <mah:PackIconMaterial Kind="AccountCircle" Width="64" Height="64" Foreground="#B0B9C6">
+
+            <!-- Placeholder -->
+            <mah:PackIconMaterial Kind="AccountCircle" Width="64" Height="64"
+                                  Foreground="{DynamicResource App.IconBrush}" Opacity="0.6">
               <mah:PackIconMaterial.Style>
                 <Style TargetType="mah:PackIconMaterial">
                   <Setter Property="Visibility" Value="Collapsed"/>
@@ -179,7 +185,7 @@
           <TextBox Grid.Row="3" Grid.Column="0"
                    materialDesign:HintAssist.Hint="Teléfono"
                    Text="{Binding Phone}" Margin="0,0,8,10"/>
-       
+
           <PasswordBox Grid.Row="4" Grid.Column="0" Margin="0,0,8,10"
                        materialDesign:HintAssist.Hint="Contraseña"/>
           <TextBox Grid.Row="4" Grid.Column="1" Margin="8,0,0,10"

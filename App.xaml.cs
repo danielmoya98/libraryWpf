@@ -1,12 +1,14 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
+using library.Services;
 
-namespace library;
-
-/// <summary>
-/// Interaction logic for App.xaml
-/// </summary>
-public partial class App : Application
+namespace library
 {
+    public partial class App : Application
+    {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            ThemeService.Apply(false); // inicia en Light (false) o Dark (true)
+        }
+    }
 }

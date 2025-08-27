@@ -17,10 +17,10 @@
     <ImageBrush x:Key="AvatarBrush"
                 ImageSource="pack://application:,,,/library;component/Assets/21249201424022cdd93cd144f099b056.jpg"
                 Stretch="UniformToFill" />
-      
-    <!-- Botón de navegación (pill clara al estar activo) -->
+
+    <!-- Botón de navegación (ahora usa brushes dinámicos) -->
     <Style x:Key="NavButtonStyle" TargetType="Button">
-      <Setter Property="Foreground" Value="#16202B"/>
+      <Setter Property="Foreground" Value="{DynamicResource Brush.Text}"/>
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="Padding" Value="8"/>
       <Setter Property="Height" Value="40"/>
@@ -35,15 +35,15 @@
                   <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <!-- ICONO: usa el del item; si es toggle, muestra chevron dinámico -->
+                <!-- ICONO -->
                 <mah:PackIconMaterial Grid.Column="0" Width="15" Height="15"
-                                      VerticalAlignment="Center" Margin="12 0 12 0">
+                                      VerticalAlignment="Center" Margin="12 0 12 0"
+                                      Foreground="{DynamicResource Brush.TextMuted}">
                   <mah:PackIconMaterial.Style>
                     <Style TargetType="{x:Type mah:PackIconMaterial}">
-                      <!-- por defecto, el icono del item -->
                       <Setter Property="Kind" Value="{Binding Icon}"/>
                       <Style.Triggers>
-                        <!-- si es el toggle y el sidebar está expandido -> ChevronLeft -->
+                        <!-- Chevron según expandido -->
                         <MultiDataTrigger>
                           <MultiDataTrigger.Conditions>
                             <Condition Binding="{Binding IsToggle}" Value="True"/>
@@ -51,7 +51,6 @@
                           </MultiDataTrigger.Conditions>
                           <Setter Property="Kind" Value="ChevronLeft"/>
                         </MultiDataTrigger>
-                        <!-- si es toggle y está colapsado -> ChevronRight -->
                         <MultiDataTrigger>
                           <MultiDataTrigger.Conditions>
                             <Condition Binding="{Binding IsToggle}" Value="True"/>
@@ -64,22 +63,27 @@
                   </mah:PackIconMaterial.Style>
                 </mah:PackIconMaterial>
 
-                <!-- TÍTULO (se oculta en modo compacto) -->
+                <!-- TÍTULO -->
                 <TextBlock Grid.Column="1" Text="{Binding Title}" VerticalAlignment="Center"
+                           Foreground="{DynamicResource Brush.Text}"
                            Visibility="{Binding ElementName=Shell, Path=ActualWidth, Converter={StaticResource CollapseToVis}}"/>
               </Grid>
             </Border>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="bg" Property="Background" Value="#F1F5F9"/>
+                <Setter TargetName="bg" Property="Background" Value="{DynamicResource Brush.Hover}"/>
               </Trigger>
+
               <!-- activo -->
               <DataTrigger Binding="{Binding IsActive}" Value="True">
-                <Setter TargetName="bg" Property="Background" Value="#E9F2FF"/>
+                <Setter TargetName="bg" Property="Background" Value="{DynamicResource Brush.PrimarySoft}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Primary}"/>
               </DataTrigger>
+
               <!-- el toggle nunca se pinta como activo -->
               <DataTrigger Binding="{Binding IsToggle}" Value="True">
                 <Setter TargetName="bg" Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="{DynamicResource Brush.Text}"/>
               </DataTrigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
@@ -91,15 +95,15 @@
     <Style x:Key="ThinSeparator" TargetType="Border">
       <Setter Property="Height" Value="1"/>
       <Setter Property="Margin" Value="12,8"/>
-      <Setter Property="Background" Value="#E6EBF0"/>
+      <Setter Property="Background" Value="{DynamicResource Brush.Separator}"/>
     </Style>
   </UserControl.Resources>
 
-  <!-- Contenedor principal (ANIMADO) -->
+  <!-- Contenedor principal -->
   <Border x:Name="Shell"
-          Background="White"
+          Background="{DynamicResource Brush.Card}"
           CornerRadius="10"
-          BorderBrush="#DDE3EA" BorderThickness="1"
+          BorderBrush="{DynamicResource Brush.Border}" BorderThickness="1"
           Margin="8 7 8 8 "
           SnapsToDevicePixels="True">
     <Border.Style>
@@ -143,19 +147,19 @@
         <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
 
-      <!-- Header: logo + nombre (sin botón) -->
+      <!-- Header: logo + nombre -->
       <Grid Grid.Row="0" Margin="10,10,10,6">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto"/>
           <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border Width="30" Background="{StaticResource LogoBrush}" Height="30" CornerRadius="14" HorizontalAlignment="Left" Margin="5 0 0 0">
-        </Border>
+        <Border Width="30" Height="30" CornerRadius="14" HorizontalAlignment="Left" Margin="5 0 0 0"
+                Background="{StaticResource LogoBrush}" />
 
         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,0,0"
                     Visibility="{Binding ElementName=Shell, Path=ActualWidth, Converter={StaticResource CollapseToVis}}">
-          <TextBlock Text="Blibioverso" FontWeight="SemiBold" />
+          <TextBlock Text="Blibioverso" FontWeight="SemiBold" Foreground="{DynamicResource Brush.Text}"/>
         </StackPanel>
       </Grid>
 
@@ -212,7 +216,9 @@
       </ScrollViewer>
 
       <!-- Footer -->
-      <Border Grid.Row="2" Background="#FFF" BorderBrush="#E6EBF0" BorderThickness="1,1,0,0"
+      <Border Grid.Row="2"
+              Background="{DynamicResource Brush.Card}"
+              BorderBrush="{DynamicResource Brush.Separator}" BorderThickness="1,1,0,0"
               CornerRadius="0,0,14,14" Padding="10">
         <Grid>
           <Grid.ColumnDefinitions>
@@ -225,10 +231,11 @@
               <StaticResource ResourceKey="AvatarBrush"/>
             </Ellipse.Fill>
           </Ellipse>
+
           <StackPanel Grid.Column="1" Margin="8,0,0,0"
                       Visibility="{Binding ElementName=Shell, Path=ActualWidth, Converter={StaticResource CollapseToVis}}">
-            <TextBlock Text="Franz Molina" FontWeight="SemiBold" />
-            <TextBlock Text="laspitter@gmail.com" Foreground="#7A8894" FontSize="11"/>
+            <TextBlock Text="Franz Molina" FontWeight="SemiBold" Foreground="{DynamicResource Brush.Text}"/>
+            <TextBlock Text="laspitter@gmail.com" Foreground="{DynamicResource Brush.TextMuted}" FontSize="11"/>
           </StackPanel>
         </Grid>
       </Border>

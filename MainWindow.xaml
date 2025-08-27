@@ -9,9 +9,12 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:books="clr-namespace:library.Views.Books"
         xmlns:orders="clr-namespace:library.Views.Orders"
-        Background="#EEF3F2"
+        Background="{DynamicResource App.BackgroundBrush}"
+        Foreground="{DynamicResource App.TextPrimaryBrush}"
         MinWidth="800"
-        MinHeight="600">
+        MinHeight="600"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True">
 
     <Window.DataContext>
         <global:ShellViewModel />
@@ -33,10 +36,10 @@
 
     </Window.Resources>
 
-    <materialDesign:DialogHost Identifier="RootDialog">
+    <materialDesign:DialogHost Identifier="RootDialog" Background="{DynamicResource App.BackgroundBrush}">
 
 
-        <Grid>
+        <Grid Background="{DynamicResource App.BackgroundBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />   <!-- sidebar fijo -->
                 <ColumnDefinition Width="*" />    <!-- área de contenido -->

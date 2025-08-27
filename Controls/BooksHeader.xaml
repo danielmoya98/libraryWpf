@@ -1,3 +1,4 @@
+<!-- Controls/BooksHeader.xaml -->
 <UserControl x:Class="library.Controls.BooksHeader"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -20,15 +21,21 @@
 
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*" />
-      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
     <!-- Título -->
     <StackPanel Orientation="Horizontal">
-      <TextBlock Text="Libros" FontWeight="SemiBold" Margin="10" FontSize="16"
-                 Foreground="{StaticResource TitleFg}"/>
-      <mah:PackIconMaterial Kind="ArrowTopRight" Width="12" Height="12" VerticalAlignment="Center"/>
+      <TextBlock Text="Libros"
+                 FontWeight="SemiBold"
+                 Margin="10"
+                 FontSize="16"
+                 Foreground="{DynamicResource Brush.Text}"/>
+      <mah:PackIconMaterial Kind="ArrowTopRight"
+                            Width="12" Height="12"
+                            VerticalAlignment="Center"
+                            Foreground="{DynamicResource Brush.TextSecondary}"/>
     </StackPanel>
 
     <!-- Filtros + Botones -->
@@ -69,16 +76,20 @@
       <Button Margin="0,0,8,0"
               Command="{Binding RelativeSource={RelativeSource AncestorType=views:BooksHeader}, Path=AddBookCommand}">
         <StackPanel Orientation="Horizontal">
-          <mah:PackIconMaterial Kind="BookPlusOutline" Width="18" Height="18" Margin="0,0,8,0"/>
-          <TextBlock x:Name="txtAdd" Text="Agregar libro"/>
+          <mah:PackIconMaterial Kind="BookPlusOutline"
+                                Width="18" Height="18" Margin="0,0,8,0"
+                                Foreground="{DynamicResource Brush.Text}"/>
+          <TextBlock x:Name="txtAdd" Text="Agregar libro" Foreground="{DynamicResource Brush.Text}"/>
         </StackPanel>
       </Button>
 
       <!-- Generar reporte -->
       <Button Command="{Binding RelativeSource={RelativeSource AncestorType=views:BooksHeader}, Path=GenerateReportCommand}">
         <StackPanel Orientation="Horizontal">
-          <mah:PackIconMaterial Kind="FileChartOutline" Width="18" Height="18" Margin="0,0,8,0"/>
-          <TextBlock x:Name="txtReport" Text="Generar reporte"/>
+          <mah:PackIconMaterial Kind="FileChartOutline"
+                                Width="18" Height="18" Margin="0,0,8,0"
+                                Foreground="{DynamicResource Brush.Text}"/>
+          <TextBlock x:Name="txtReport" Text="Generar reporte" Foreground="{DynamicResource Brush.Text}"/>
         </StackPanel>
       </Button>
     </WrapPanel>

@@ -1,25 +1,10 @@
-<!-- Themes/CustomersTable.Styles.xaml -->
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:models="clr-namespace:library.Models"
-    xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
     xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=System.ComponentModel.TypeConverter">
-
-  <!-- ===== Colores tabla ===== -->
-  <SolidColorBrush x:Key="RowSeparator" Color="#EDF1F7"/>
-  <SolidColorBrush x:Key="HeaderBorder" Color="#E6EBF2"/>
-  <SolidColorBrush x:Key="HeaderFg"    Color="#6B7280"/>
-  <SolidColorBrush x:Key="TitleFg"     Color="#1F2937"/>
-
-  <!-- ===== Colores paginación ===== -->
-  <SolidColorBrush x:Key="PageBorder"   Color="#E5E9F0"/>
-  <SolidColorBrush x:Key="PageText"     Color="#4B5563"/>
-  <SolidColorBrush x:Key="PageHoverBg"  Color="#F6F8FF"/>
-  <SolidColorBrush x:Key="PageActiveBg" Color="#5B6BFE"/>
-  <SolidColorBrush x:Key="PageActiveFg" Color="White"/>
 
   <!-- ===== Estilos de paginación ===== -->
   <Style x:Key="PageButton" TargetType="Button">
@@ -27,8 +12,8 @@
     <Setter Property="Height" Value="25"/>
     <Setter Property="Padding" Value="12,0"/>
     <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="Foreground" Value="{StaticResource PageText}"/>
-    <Setter Property="BorderBrush" Value="{StaticResource PageBorder}"/>
+    <Setter Property="Foreground" Value="{DynamicResource PageText}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource PageBorder}"/>
     <Setter Property="BorderThickness" Value="0,0,1,0"/>
     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
     <Setter Property="Template">
@@ -42,7 +27,7 @@
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter TargetName="bd" Property="Background" Value="{StaticResource PageHoverBg}"/>
+              <Setter TargetName="bd" Property="Background" Value="{DynamicResource PageHoverBg}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
               <Setter Property="Opacity" Value="0.45"/>
@@ -54,8 +39,8 @@
   </Style>
 
   <Style x:Key="PageButtonActive" TargetType="Button" BasedOn="{StaticResource PageButton}">
-    <Setter Property="Background" Value="{StaticResource PageActiveBg}"/>
-    <Setter Property="Foreground" Value="{StaticResource PageActiveFg}"/>
+    <Setter Property="Background" Value="{DynamicResource PageActiveBg}"/>
+    <Setter Property="Foreground" Value="{DynamicResource PageActiveFg}"/>
   </Style>
 
   <Style x:Key="PageArrowButton" TargetType="Button" BasedOn="{StaticResource PageButton}">
@@ -69,12 +54,12 @@
         <ControlTemplate TargetType="Button">
           <Border x:Name="bd" CornerRadius="16,0,0,16"
                   Background="{TemplateBinding Background}"
-                  BorderBrush="{StaticResource PageBorder}" BorderThickness="0">
+                  BorderBrush="{DynamicResource PageBorder}" BorderThickness="0">
             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter TargetName="bd" Property="Background" Value="{StaticResource PageHoverBg}"/>
+              <Setter TargetName="bd" Property="Background" Value="{DynamicResource PageHoverBg}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
               <Setter TargetName="bd" Property="Opacity" Value="0.45"/>
@@ -91,12 +76,12 @@
         <ControlTemplate TargetType="Button">
           <Border x:Name="bd" CornerRadius="0,16,16,0"
                   Background="{TemplateBinding Background}"
-                  BorderBrush="{StaticResource PageBorder}" BorderThickness="0">
+                  BorderBrush="{DynamicResource PageBorder}" BorderThickness="0">
             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter TargetName="bd" Property="Background" Value="{StaticResource PageHoverBg}"/>
+              <Setter TargetName="bd" Property="Background" Value="{DynamicResource PageHoverBg}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
               <Setter TargetName="bd" Property="Opacity" Value="0.45"/>
@@ -113,7 +98,7 @@
     <Setter Property="Height" Value="32"/>
     <Setter Property="Padding" Value="0"/>
     <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="BorderBrush" Value="#E5E9F0"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource App.BorderBrush}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="materialDesign:RippleAssist.IsCentered" Value="True"/>
     <Setter Property="Template">
@@ -127,7 +112,7 @@
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter TargetName="bd" Property="Background" Value="#F6F8FB"/>
+              <Setter TargetName="bd" Property="Background" Value="{DynamicResource App.HoverBrush}"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -139,22 +124,23 @@
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="HorizontalContentAlignment" Value="Center"/>
     <Setter Property="Padding" Value="12,0"/>
-    <Setter Property="Foreground" Value="#1F2937"/>
+    <Setter Property="Foreground" Value="{DynamicResource App.TextPrimaryBrush}"/>
     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="DataGridCell">
-          <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="0">
+          <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                  BorderBrush="Transparent" BorderThickness="0">
             <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter TargetName="Bd" Property="Background" Value="#F6F8FB"/>
+              <Setter TargetName="Bd" Property="Background" Value="{DynamicResource App.HoverBrush}"/>
             </Trigger>
             <Trigger Property="IsSelected" Value="True">
               <Setter TargetName="Bd" Property="Background" Value="Transparent"/>
-              <Setter Property="Foreground" Value="#1F2937"/>
+              <Setter Property="Foreground" Value="{DynamicResource App.TextPrimaryBrush}"/>
             </Trigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
               <Setter TargetName="Bd" Property="BorderBrush" Value="Transparent"/>
@@ -170,23 +156,22 @@
     <Setter Property="VerticalAlignment" Value="Center"/>
   </Style>
 
-  <!-- Header con flechas de orden conservando estilo -->
+  <!-- Header con flechas -->
   <Style x:Key="SlimHeader" TargetType="DataGridColumnHeader">
-    <Setter Property="Background" Value="White"/>
-    <Setter Property="Foreground" Value="{StaticResource HeaderFg}"/>
+    <Setter Property="Background" Value="{DynamicResource App.SurfaceBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource HeaderFg}"/>
     <Setter Property="FontWeight" Value="SemiBold"/>
     <Setter Property="HorizontalContentAlignment" Value="Center"/>
     <Setter Property="Padding" Value="12,8"/>
-    <Setter Property="BorderBrush" Value="{StaticResource HeaderBorder}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource HeaderBorder}"/>
     <Setter Property="BorderThickness" Value="0,0,0,1"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="DataGridColumnHeader">
-          <Border
-            Background="{TemplateBinding Background}"
-            BorderBrush="{TemplateBinding BorderBrush}"
-            BorderThickness="{TemplateBinding BorderThickness}"
-            Padding="{TemplateBinding Padding}">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  Padding="{TemplateBinding Padding}">
             <Grid>
               <ContentPresenter Margin="0,0,18,0"
                                 VerticalAlignment="Center"
@@ -224,34 +209,42 @@
   </Style>
 
   <Style x:Key="SlimRow" TargetType="DataGridRow">
-    <Setter Property="Height" Value="56"/>
-    <Setter Property="BorderBrush" Value="{StaticResource RowSeparator}"/>
+    <Setter Property="MinHeight" Value="50"/>
+    <Setter Property="Height" Value="50"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource RowSeparator}"/>
     <Setter Property="BorderThickness" Value="0,0,0,1"/>
-    <Setter Property="Background" Value="White"/>
+    <Setter Property="Background" Value="{DynamicResource App.SurfaceBrush}"/>
+
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="#FAFBFD"/>
+        <Setter Property="Background" Value="{DynamicResource App.BackgroundBrush}"/>
       </Trigger>
       <Trigger Property="IsSelected" Value="True">
-        <Setter Property="Background" Value="#F4F7FF"/>
+        <Setter Property="Background" Value="{DynamicResource App.RowSelectedBrush}"/>
+      </Trigger>
+
+      <!-- Cuando se muestran los detalles => altura automática -->
+      <Trigger Property="DetailsVisibility" Value="Visible">
+        <Setter Property="Height" Value="Auto"/>
       </Trigger>
     </Style.Triggers>
   </Style>
 
-  <!-- Chip de género (usa enum models:Gender) -->
+
+  <!-- Chip de género -->
   <Style x:Key="GenderChip" TargetType="Border">
     <Setter Property="Padding" Value="10,4"/>
     <Setter Property="CornerRadius" Value="10"/>
-    <Setter Property="Background" Value="#EEF2F6"/>
-    <Setter Property="BorderBrush" Value="#E2E8F0"/>
+    <Setter Property="Background" Value="{DynamicResource Brush.Muted}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.MutedBorder}"/>
     <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="TextElement.Foreground" Value="#475569"/>
+    <Setter Property="TextElement.Foreground" Value="{DynamicResource Brush.TextSecondary}"/>
     <Setter Property="HorizontalAlignment" Value="Left"/>
     <Style.Triggers>
       <DataTrigger Binding="{Binding Gender}" Value="{x:Static models:Gender.Male}">
-        <Setter Property="Background" Value="#E6F0FF"/>
-        <Setter Property="BorderBrush" Value="#D3E3FF"/>
-        <Setter Property="TextElement.Foreground" Value="#2B5CB8"/>
+        <Setter Property="Background" Value="{DynamicResource Brush.InfoSoft}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.InfoBorder}"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource Brush.Info}"/>
       </DataTrigger>
       <DataTrigger Binding="{Binding Gender}" Value="{x:Static models:Gender.Female}">
         <Setter Property="Background" Value="#FFEAF0"/>
@@ -259,9 +252,9 @@
         <Setter Property="TextElement.Foreground" Value="#B23A6F"/>
       </DataTrigger>
       <DataTrigger Binding="{Binding Gender}" Value="{x:Static models:Gender.Other}">
-        <Setter Property="Background" Value="#EEF2F6"/>
-        <Setter Property="BorderBrush" Value="#DFE6EE"/>
-        <Setter Property="TextElement.Foreground" Value="#475466"/>
+        <Setter Property="Background" Value="{DynamicResource Brush.Muted}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.MutedBorder}"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource Brush.TextSecondary}"/>
       </DataTrigger>
     </Style.Triggers>
   </Style>

@@ -1,3 +1,4 @@
+<!-- Controls/StatsSummary.xaml -->
 <UserControl x:Class="library.Controls.StatsSummary"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -5,20 +6,22 @@
              xmlns:m="clr-namespace:library.Models"
              xmlns:layout="clr-namespace:library.Layout">
     <UserControl.Resources>
+        <!-- Cada DashStat se renderiza con StatKpiCard -->
         <DataTemplate DataType="{x:Type m:DashStat}">
             <ctrls:StatKpiCard/>
         </DataTemplate>
-        <!-- margen entre items -->
+
+        <!-- separación entre tarjetas -->
         <Style TargetType="ContentPresenter">
             <Setter Property="Margin" Value="2"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
         </Style>
     </UserControl.Resources>
 
-    <!-- El ScrollViewer de la vista puede quedarse fuera si ya tienes uno superior -->
     <ItemsControl ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource AncestorType=UserControl}}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
+                <!-- Panel responsivo con tus breakpoints -->
                 <UniformGrid layout:AdaptiveUniformGrid.Breakpoints="1300=4;960=3;640=2;0=1"
                              layout:AdaptiveUniformGrid.HorizontalPadding="0"/>
             </ItemsPanelTemplate>

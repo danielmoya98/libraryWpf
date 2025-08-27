@@ -6,24 +6,86 @@
              xmlns:converters="clr-namespace:library.Converters"
              MinWidth="520" MaxWidth="680" MaxHeight="420">
 
+  <!-- ===== Resources (theme-aware) ===== -->
   <UserControl.Resources>
-    <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <!-- Reusa tu paleta/estilos -->
-        <ResourceDictionary Source="../Resources/Themes/CustomersTable.Styles.xaml"/>
-      </ResourceDictionary.MergedDictionaries>
+    <converters:SafeImageSourceConverter x:Key="SafeImg" />
 
-      <converters:SafeImageSourceConverter x:Key="SafeImg" />
+    <!-- Fondo de advertencia suave (se adapta a Light/Dark) -->
+    <SolidColorBrush x:Key="WarnSurfaceBrush"
+                     Color="{DynamicResource App.WarningColor}"
+                     Opacity="0.12"/>
+    <SolidColorBrush x:Key="WarnBorderBrush"
+                     Color="{DynamicResource App.WarningColor}"
+                     Opacity="0.6"/>
 
-      <!-- Botón peligro (rojo) -->
-      <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="Background" Value="#E53935"/>
-      </Style>
-    </ResourceDictionary>
+    <!-- Píldoras -->
+    <Style x:Key="PillButtonBase" TargetType="Button">
+      <Setter Property="Height" Value="36"/>
+      <Setter Property="MinWidth" Value="140"/>
+      <Setter Property="Padding" Value="12,0"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource App.BorderBrush}"/>
+      <Setter Property="Foreground" Value="{DynamicResource App.TextPrimaryBrush}"/>
+      <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="bd" CornerRadius="18"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="{DynamicResource PageHoverBg}"/>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.55"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="PillOutlineButton" TargetType="Button" BasedOn="{StaticResource PillButtonBase}"/>
+
+    <Style x:Key="PillDangerButton" TargetType="Button" BasedOn="{StaticResource PillButtonBase}">
+      <Setter Property="Background"  Value="{DynamicResource App.ErrorBrush}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource App.ErrorBrush}"/>
+      <Setter Property="Foreground"  Value="White"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="bd" CornerRadius="18"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="bd" Property="Opacity" Value="0.92"/>
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="bd" Property="Opacity" Value="0.85"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
   </UserControl.Resources>
 
-  <Border Padding="22" Background="White">
+  <!-- ===== Content ===== -->
+  <Border Padding="22"
+          Background="{DynamicResource App.CardBrush}"
+          BorderBrush="{DynamicResource App.BorderBrush}"
+          BorderThickness="1"
+          CornerRadius="10">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
@@ -33,9 +95,12 @@
 
       <!-- Título -->
       <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,14">
-        <mah:PackIconMaterial Kind="TrashCanOutline" Width="20" Height="20" Foreground="#E53935" />
-        <TextBlock Text="Eliminar libro" FontSize="20" FontWeight="SemiBold"
-                   Foreground="#243147" Margin="8,0,0,0"/>
+        <mah:PackIconMaterial Kind="TrashCanOutline" Width="20" Height="20"
+                              Foreground="{DynamicResource App.ErrorBrush}"/>
+        <TextBlock Text="Eliminar libro"
+                   FontSize="20" FontWeight="SemiBold"
+                   Foreground="{DynamicResource App.TextPrimaryBrush}"
+                   Margin="8,0,0,0"/>
       </StackPanel>
 
       <!-- Cuerpo -->
@@ -47,43 +112,56 @@
         </Grid.ColumnDefinitions>
 
         <!-- Portada -->
-        <Border Grid.Column="0" Width="140" Height="200" CornerRadius="8"
-                BorderBrush="#E2E8F0" BorderThickness="1" Background="#F6F8FB"
+        <Border Grid.Column="0"
+                Width="140" Height="200" CornerRadius="8"
+                BorderBrush="{DynamicResource App.BorderBrush}"
+                BorderThickness="1"
+                Background="{DynamicResource App.SurfaceBrush}"
                 HorizontalAlignment="Center" VerticalAlignment="Top">
-         
         </Border>
 
         <!-- Datos + advertencia -->
-        <StackPanel Grid.Column="2" Margin="0,0,0,0">
-          <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="16"
-                     TextWrapping="Wrap" />
+        <StackPanel Grid.Column="2">
+          <TextBlock Text="{Binding Title}"
+                     FontWeight="SemiBold" FontSize="16"
+                     TextWrapping="Wrap"
+                     Foreground="{DynamicResource App.TextPrimaryBrush}"/>
           <TextBlock>
-            <Run Text="por " Foreground="#6B7280"/>
-            <Run Text="{Binding Author}"/>
+            <Run Text="por " Foreground="{DynamicResource App.TextSecondaryBrush}"/>
+            <Run Text="{Binding Author}" Foreground="{DynamicResource App.TextPrimaryBrush}"/>
           </TextBlock>
 
           <StackPanel Orientation="Horizontal" Margin="0,8,0,0" >
             <StackPanel>
-              <TextBlock Text="ISBN" Foreground="#6B7280" FontSize="12"/>
-              <TextBlock Text="{Binding Isbn}" />
+              <TextBlock Text="ISBN" FontSize="12"
+                         Foreground="{DynamicResource App.TextSecondaryBrush}"/>
+              <TextBlock Text="{Binding Isbn}" Foreground="{DynamicResource App.TextPrimaryBrush}"/>
             </StackPanel>
             <StackPanel>
-              <TextBlock Text="Categoría" Foreground="#6B7280" FontSize="12"/>
-              <TextBlock Text="{Binding Category}" />
+              <TextBlock Text="Categoría" FontSize="12" Margin="10,0,10,0"
+                         Foreground="{DynamicResource App.TextSecondaryBrush}"/>
+              <TextBlock Text="{Binding Category}" Foreground="{DynamicResource App.TextPrimaryBrush}"/>
             </StackPanel>
             <StackPanel>
-              <TextBlock Text="Año" Foreground="#6B7280" FontSize="12"/>
-              <TextBlock Text="{Binding Year}" />
+              <TextBlock Text="Año" FontSize="12"
+                         Foreground="{DynamicResource App.TextSecondaryBrush}"/>
+              <TextBlock Text="{Binding Year}" Foreground="{DynamicResource App.TextPrimaryBrush}"/>
             </StackPanel>
           </StackPanel>
 
-          <Border Background="#FFF3E0" BorderBrush="#FFE0B2" BorderThickness="1"
-                  CornerRadius="8" Padding="10" Margin="0,16,0,0">
+          <!-- Advertencia -->
+          <Border Background="{StaticResource WarnSurfaceBrush}"
+                  BorderBrush="{StaticResource WarnBorderBrush}"
+                  BorderThickness="1"
+                  CornerRadius="8"
+                  Padding="10" Margin="0,16,0,0">
             <StackPanel Orientation="Horizontal">
               <mah:PackIconMaterial Kind="AlertOctagonOutline" Width="20" Height="20"
-                                    Foreground="#E65100" Margin="0,0,8,0"/>
+                                    Foreground="{DynamicResource App.WarningBrush}"
+                                    Margin="0,0,8,0"/>
               <TextBlock Text="Esta acción no se puede deshacer. Se eliminará el libro del catálogo."
-                         Foreground="#4E342E" TextWrapping="Wrap" />
+                         TextWrapping="Wrap"
+                         Foreground="{DynamicResource App.TextPrimaryBrush}"/>
             </StackPanel>
           </Border>
         </StackPanel>
@@ -92,7 +170,8 @@
       <!-- Footer -->
       <DockPanel Grid.Row="2" LastChildFill="False" Margin="0,16,0,0">
         <!-- Cancelar -->
-        <Button DockPanel.Dock="Right" Margin="8,0,0,0"
+        <Button Style="{StaticResource PillOutlineButton}"
+                DockPanel.Dock="Right" Margin="8,0,0,0"
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                 CommandParameter="{x:Null}">
           <StackPanel Orientation="Horizontal">
@@ -102,7 +181,8 @@
         </Button>
 
         <!-- Eliminar -->
-        <Button DockPanel.Dock="Right" Style="{StaticResource DangerButton}"
+        <Button Style="{StaticResource PillDangerButton}"
+                DockPanel.Dock="Right"
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                 CommandParameter="True">
           <StackPanel Orientation="Horizontal">

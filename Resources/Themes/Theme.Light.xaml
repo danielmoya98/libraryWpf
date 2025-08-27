@@ -1,6 +1,110 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
-    <!-- Light -->
-    <materialDesign:BundledTheme x:Key="" BaseTheme="Light" PrimaryColor="Indigo" SecondaryColor="Lime"/>
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- ========= TOKENS: COLORS ========= -->
+  <Color x:Key="App.BackgroundColor">#F7F9FC</Color>
+  <Color x:Key="App.SurfaceColor">#FFFFFFFF</Color>
+  <Color x:Key="App.CardColor">#FFFFFFFF</Color>
+  <Color x:Key="App.ElevatedColor">#FFFFFFFF</Color>
+
+  <Color x:Key="App.BorderColor">#E8EDF2</Color>
+  <Color x:Key="App.DividerColor">#E6EBF0</Color>
+
+  <Color x:Key="App.PrimaryColor">#5B6BFE</Color>
+  <Color x:Key="App.PrimaryHoverColor">#6A77FF</Color>
+  <Color x:Key="App.PrimaryPressedColor">#4D5CF0</Color>
+  <Color x:Key="App.PrimarySoftColor">#E9F2FF</Color>   <!-- para fondos suaves -->
+
+  <Color x:Key="App.SuccessColor">#10B981</Color>
+  <Color x:Key="App.WarningColor">#F59E0B</Color>
+  <Color x:Key="App.ErrorColor">#EF4444</Color>
+
+  <Color x:Key="App.TextPrimaryColor">#1F2937</Color>
+  <Color x:Key="App.TextSecondaryColor">#6B7280</Color>
+  <Color x:Key="App.TextMutedColor">#9CA3AF</Color>
+  <Color x:Key="App.IconColor">#6B7280</Color>
+
+  <!-- Extras útiles para tablas/hover/selección -->
+  <Color x:Key="App.MutedColor">#EEF2F6</Color>
+  <Color x:Key="App.MutedBorderColor">#E2E8F0</Color>
+  <Color x:Key="App.HoverColor">#F6F8FF</Color>
+  <Color x:Key="App.RowSelectedColor">#F4F7FF</Color>
+  <Color x:Key="App.ChartGridColor">#EAEFF5</Color>
+
+  <!-- ========= TOKENS: BRUSHES ========= -->
+  <SolidColorBrush x:Key="App.BackgroundBrush" Color="{DynamicResource App.BackgroundColor}"/>
+  <SolidColorBrush x:Key="App.SurfaceBrush"    Color="{DynamicResource App.SurfaceColor}"/>
+  <SolidColorBrush x:Key="App.CardBrush"       Color="{DynamicResource App.CardColor}"/>
+  <SolidColorBrush x:Key="App.ElevatedBrush"   Color="{DynamicResource App.ElevatedColor}"/>
+
+  <SolidColorBrush x:Key="App.BorderBrush"     Color="{DynamicResource App.BorderColor}"/>
+  <SolidColorBrush x:Key="App.DividerBrush"    Color="{DynamicResource App.DividerColor}"/>
+
+  <SolidColorBrush x:Key="App.PrimaryBrush"        Color="{DynamicResource App.PrimaryColor}"/>
+  <SolidColorBrush x:Key="App.PrimaryHoverBrush"   Color="{DynamicResource App.PrimaryHoverColor}"/>
+  <SolidColorBrush x:Key="App.PrimaryPressedBrush" Color="{DynamicResource App.PrimaryPressedColor}"/>
+  <SolidColorBrush x:Key="App.PrimarySoftBrush"    Color="{DynamicResource App.PrimarySoftColor}"/>
+
+  <SolidColorBrush x:Key="App.SuccessBrush"    Color="{DynamicResource App.SuccessColor}"/>
+  <SolidColorBrush x:Key="App.WarningBrush"    Color="{DynamicResource App.WarningColor}"/>
+  <SolidColorBrush x:Key="App.ErrorBrush"      Color="{DynamicResource App.ErrorColor}"/>
+
+  <SolidColorBrush x:Key="App.TextPrimaryBrush"   Color="{DynamicResource App.TextPrimaryColor}"/>
+  <SolidColorBrush x:Key="App.TextSecondaryBrush" Color="{DynamicResource App.TextSecondaryColor}"/>
+  <SolidColorBrush x:Key="App.TextMutedBrush"     Color="{DynamicResource App.TextMutedColor}"/>
+  <SolidColorBrush x:Key="App.IconBrush"          Color="{DynamicResource App.IconColor}"/>
+
+  <SolidColorBrush x:Key="App.MutedBrush"         Color="{DynamicResource App.MutedColor}"/>
+  <SolidColorBrush x:Key="App.MutedBorderBrush"   Color="{DynamicResource App.MutedBorderColor}"/>
+  <SolidColorBrush x:Key="App.HoverBrush"         Color="{DynamicResource App.HoverColor}"/>
+  <SolidColorBrush x:Key="App.RowSelectedBrush"   Color="{DynamicResource App.RowSelectedColor}"/>
+  <SolidColorBrush x:Key="App.ChartGridBrush"     Color="{DynamicResource App.ChartGridColor}"/>
+
+  <!-- ========= ALIAS DE COMPATIBILIDAD (lo que ya usas en XAML) ========= -->
+  <!-- Textos / bordes tabla -->
+  <SolidColorBrush x:Key="TitleFg"     Color="{DynamicResource App.TextPrimaryColor}"/>
+  <SolidColorBrush x:Key="HeaderFg"    Color="{DynamicResource App.TextSecondaryColor}"/>
+  <SolidColorBrush x:Key="HeaderBorder" Color="{DynamicResource App.DividerColor}"/>
+  <SolidColorBrush x:Key="RowSeparator" Color="{DynamicResource App.DividerColor}"/>
+
+  <!-- Paginación -->
+  <SolidColorBrush x:Key="PageBorder"   Color="{DynamicResource App.BorderColor}"/>
+  <SolidColorBrush x:Key="PageText"     Color="{DynamicResource App.TextSecondaryColor}"/>
+  <SolidColorBrush x:Key="PageHoverBg"  Color="{DynamicResource App.HoverColor}"/>
+  <SolidColorBrush x:Key="PageActiveBg" Color="{DynamicResource App.PrimaryColor}"/>
+  <SolidColorBrush x:Key="PageActiveFg" Color="#FFFFFFFF"/>
+
+  <!-- Alias “Brush.*” usados en varios controles -->
+  <SolidColorBrush x:Key="Brush.Card"        Color="{DynamicResource App.CardColor}"/>
+  <SolidColorBrush x:Key="Brush.Border"      Color="{DynamicResource App.BorderColor}"/>
+  <SolidColorBrush x:Key="Brush.Separator"   Color="{DynamicResource App.DividerColor}"/>
+  <SolidColorBrush x:Key="Brush.Text"        Color="{DynamicResource App.TextPrimaryColor}"/>
+  <SolidColorBrush x:Key="Brush.TextMuted"   Color="{DynamicResource App.TextSecondaryColor}"/>
+  <SolidColorBrush x:Key="Brush.Hover"       Color="{DynamicResource App.HoverColor}"/>
+  <SolidColorBrush x:Key="Brush.Primary"     Color="{DynamicResource App.PrimaryColor}"/>
+  <SolidColorBrush x:Key="Brush.PrimarySoft" Color="{DynamicResource App.PrimarySoftColor}"/>
+
+  <!-- Alias extra usados por tablas/chips -->
+  <SolidColorBrush x:Key="Brush.Muted"       Color="{DynamicResource App.MutedColor}"/>
+  <SolidColorBrush x:Key="Brush.MutedBorder" Color="{DynamicResource App.MutedBorderColor}"/>
+  <SolidColorBrush x:Key="Brush.TextSecondary" Color="{DynamicResource App.TextSecondaryColor}"/>
+  <SolidColorBrush x:Key="Brush.Icon"        Color="{DynamicResource App.IconColor}"/>
+
+  <!-- Semánticos para chips de estado -->
+  <SolidColorBrush x:Key="Brush.Success"       Color="{DynamicResource App.SuccessColor}"/>
+  <SolidColorBrush x:Key="Brush.SuccessSoft"   Color="#EAF7EF"/>
+  <SolidColorBrush x:Key="Brush.SuccessBorder" Color="#D2EFE0"/>
+
+  <SolidColorBrush x:Key="Brush.Warning"       Color="{DynamicResource App.WarningColor}"/>
+  <SolidColorBrush x:Key="Brush.WarningSoft"   Color="#FFF7E6"/>
+  <SolidColorBrush x:Key="Brush.WarningBorder" Color="#FFE8C7"/>
+
+  <SolidColorBrush x:Key="Brush.Info"          Color="#1D4ED8"/>
+  <SolidColorBrush x:Key="Brush.InfoSoft"      Color="#E6F4FF"/>
+  <SolidColorBrush x:Key="Brush.InfoBorder"    Color="#CFE8FF"/>
+
+  <SolidColorBrush x:Key="Brush.Danger"        Color="{DynamicResource App.ErrorColor}"/>
+  <SolidColorBrush x:Key="Brush.DangerSoft"    Color="#FEE2E2"/>
+  <SolidColorBrush x:Key="Brush.DangerBorder"  Color="#FECACA"/>
+
 </ResourceDictionary>

@@ -3,44 +3,90 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             MinHeight="48">
-  <Grid>
+             xmlns:controls="clr-namespace:library.Controls"
+             x:Name="root">
+
+  <UserControl.Resources>
+    <Style x:Key="PillToggle" TargetType="ToggleButton" BasedOn="{StaticResource MaterialDesignFlatButton}">
+      <Setter Property="Height" Value="36"/>
+      <Setter Property="Padding" Value="12,0"/>
+      <Setter Property="MinWidth" Value="130"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource App.BorderBrush}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Foreground" Value="{DynamicResource App.TextPrimaryBrush}"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ToggleButton">
+            <Border x:Name="bd" CornerRadius="18"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <mah:PackIconMaterial x:Name="ico" Kind="ViewListOutline" Width="18" Height="18"
+                                      Foreground="{DynamicResource App.IconBrush}" Margin="0,0,8,0"/>
+                <TextBlock x:Name="label" Text="Lista" />
+              </StackPanel>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="{DynamicResource Brush.Hover}"/>
+              </Trigger>
+              <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="{DynamicResource App.PrimaryHoverBrush}"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter TargetName="ico" Property="Foreground" Value="White"/>
+                <Setter TargetName="ico" Property="Kind" Value="ViewGridOutline"/>
+                <Setter TargetName="label" Property="Text" Value="Tarjetas"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    
+    <Style TargetType="controls:CustomersHeader"/>
+    
+  </UserControl.Resources>
+
+  <Grid Margin="0,0,0,0">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
       <ColumnDefinition Width="Auto" />
     </Grid.ColumnDefinitions>
 
-    <!-- Título: Clientes (N) -->
-    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
-      <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                 FontSize="20" FontWeight="SemiBold" />
-      <TextBlock Text="(" FontSize="20" FontWeight="SemiBold" Foreground="#666"/>
-      <TextBlock Text="{Binding Count, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                 FontSize="20" FontWeight="SemiBold" Foreground="#666"/>
-      <TextBlock Text=")" FontSize="20" FontWeight="SemiBold" Foreground="#666"/>
+    <!-- Izquierda: Título -->
+    <StackPanel Orientation="Horizontal">
+      <TextBlock Text="{Binding Title, ElementName=root, FallbackValue=Clientes}"
+                 FontWeight="SemiBold" Margin="10"
+                 FontSize="16" Foreground="{DynamicResource TitleFg}"/>
+      <mah:PackIconMaterial Kind="ArrowTopRight" Width="10" Height="10"
+                            VerticalAlignment="Center" Foreground="{DynamicResource Brush.Icon}" />
     </StackPanel>
 
-    <!-- Botones -->
-    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" >
-      <!-- Generar reporte -->
-      <Button Command="{Binding ReportCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-              Margin="0 0 10 0"
-              Padding="14,8">
-        <StackPanel Orientation="Horizontal" >
-          <mah:PackIconMaterial Kind="FileChartOutline" Width="18" Height="18" Margin="0 0 5 0"/>
-          <TextBlock Text="Generar reporte"/>
+    <!-- Derecha: Botones + Toggle -->
+    <StackPanel Grid.Column="1" Orientation="Horizontal"
+                HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10">
+      <Button Margin="0,0,8,0"
+              Command="{Binding AddCommand, ElementName=root}">
+        <StackPanel Orientation="Horizontal">
+          <mah:PackIconMaterial Kind="AccountPlusOutline" Width="18" Height="18"
+                                Margin="0,0,8,0" Foreground="{DynamicResource Brush.Icon}" />
+          <TextBlock Text="Agregar cliente"/>
         </StackPanel>
       </Button>
 
-      <!-- Nuevo cliente -->
-      <Button Command="{Binding AddCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-              
-              Padding="14,8">
-        <StackPanel Orientation="Horizontal" >
-          <mah:PackIconMaterial Kind="AccountPlus" Width="18" Height="18" Margin="0 0 5 0"/>
-          <TextBlock Text="Nuevo cliente"/>
+      <Button Margin="0,0,12,0"
+              Command="{Binding ReportCommand, ElementName=root}">
+        <StackPanel Orientation="Horizontal">
+          <mah:PackIconMaterial Kind="FileChartOutline" Width="18" Height="18"
+                                Margin="0,0,8,0" Foreground="{DynamicResource Brush.Icon}" />
+          <TextBlock Text="Generar reporte"/>
         </StackPanel>
       </Button>
     </StackPanel>
   </Grid>
+
+  
+
 </UserControl>

@@ -13,12 +13,7 @@
     <!-- converter seguro para imágenes -->
     <conv:SafeImageSourceConverter x:Key="SafeImg"/>
 
-    <!-- Botones píldora -->
-    <SolidColorBrush x:Key="BtnPrimary"       Color="#5B6BFE"/>
-    <SolidColorBrush x:Key="BtnPrimaryHover"  Color="#4C59E8"/>
-    <SolidColorBrush x:Key="BtnOutlineBorder" Color="#E5E9F0"/>
-    <SolidColorBrush x:Key="BtnOutlineHover"  Color="#F6F8FF"/>
-
+    <!-- Botones píldora (100% theme-aware) -->
     <Style x:Key="PillButtonBase" TargetType="Button">
       <Setter Property="Height" Value="36"/>
       <Setter Property="MinWidth" Value="140"/>
@@ -26,8 +21,8 @@
       <Setter Property="FontWeight" Value="SemiBold"/>
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="Background" Value="Transparent"/>
-      <Setter Property="BorderBrush" Value="{StaticResource BtnOutlineBorder}"/>
-      <Setter Property="Foreground" Value="#1F2937"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource App.BorderBrush}"/>
+      <Setter Property="Foreground" Value="{DynamicResource App.TextPrimaryBrush}"/>
       <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
       <Setter Property="Template">
         <Setter.Value>
@@ -40,7 +35,7 @@
             </Border>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="bd" Property="Background" Value="{StaticResource BtnOutlineHover}"/>
+                <Setter TargetName="bd" Property="Background" Value="{DynamicResource PageHoverBg}"/>
               </Trigger>
               <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Opacity" Value="0.55"/>
@@ -52,8 +47,8 @@
     </Style>
 
     <Style x:Key="PillPrimaryButton" TargetType="Button" BasedOn="{StaticResource PillButtonBase}">
-      <Setter Property="Background"  Value="{StaticResource BtnPrimary}"/>
-      <Setter Property="BorderBrush" Value="{StaticResource BtnPrimary}"/>
+      <Setter Property="Background"  Value="{DynamicResource App.PrimaryBrush}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource App.PrimaryBrush}"/>
       <Setter Property="Foreground"  Value="White"/>
       <Setter Property="Template">
         <Setter.Value>
@@ -66,7 +61,13 @@
             </Border>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="bd" Property="Background" Value="{StaticResource BtnPrimaryHover}"/>
+                <Setter TargetName="bd" Property="Background" Value="{DynamicResource App.PrimaryHoverBrush}"/>
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="{DynamicResource App.PrimaryPressedBrush}"/>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.55"/>
               </Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
@@ -78,7 +79,7 @@
   </UserControl.Resources>
 
   <!-- ================== CONTENT ================== -->
-  <Border Padding="24,20,24,16">
+  <Border Padding="24,20,24,16" Background="{DynamicResource App.CardBrush}">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
@@ -89,7 +90,7 @@
       <!-- Título -->
       <TextBlock Grid.Row="0" Text="Agregar cliente"
                  FontSize="20" FontWeight="SemiBold" Margin="4,0,4,16"
-                 Foreground="#243147"/>
+                 Foreground="{DynamicResource App.TextPrimaryBrush}"/>
 
       <!-- Contenido -->
       <Grid Grid.Row="1">
@@ -103,7 +104,8 @@
         <StackPanel Grid.Column="0" HorizontalAlignment="Center">
           <Grid Width="112" Height="112">
             <!-- fondo -->
-            <Ellipse Fill="#EDF2F7"/>
+            <Ellipse Fill="{DynamicResource App.ElevatedBrush}"/>
+
             <!-- Foto (solo si hay ruta válida) -->
             <Ellipse>
               <Ellipse.Style>
@@ -124,8 +126,10 @@
                             ImageSource="{Binding PhotoPath, Converter={StaticResource SafeImg}}"/>
               </Ellipse.Fill>
             </Ellipse>
+
             <!-- Placeholder con ícono si no hay foto -->
-            <mah:PackIconMaterial Kind="AccountCircle" Width="64" Height="64" Foreground="#B0B9C6">
+            <mah:PackIconMaterial Kind="AccountCircle" Width="64" Height="64"
+                                  Foreground="{DynamicResource App.TextMutedBrush}">
               <mah:PackIconMaterial.Style>
                 <Style TargetType="mah:PackIconMaterial">
                   <Setter Property="Visibility" Value="Collapsed"/>
@@ -171,30 +175,37 @@
 
           <TextBox Grid.Row="0" Grid.ColumnSpan="2"
                    materialDesign:HintAssist.Hint="Cédula de Identidad"
+                   Foreground="{DynamicResource App.TextPrimaryBrush}"
                    Text="{Binding Ci}" Margin="0,0,0,10"/>
 
           <TextBox Grid.Row="1" Grid.Column="0"
                    materialDesign:HintAssist.Hint="Nombre"
+                   Foreground="{DynamicResource App.TextPrimaryBrush}"
                    Text="{Binding FirstName}" Margin="0,0,8,10"/>
           <TextBox Grid.Row="1" Grid.Column="1"
                    materialDesign:HintAssist.Hint="Apellido"
+                   Foreground="{DynamicResource App.TextPrimaryBrush}"
                    Text="{Binding LastName}" Margin="8,0,0,10"/>
 
           <TextBox Grid.Row="2" Grid.ColumnSpan="2"
                    materialDesign:HintAssist.Hint="Email"
+                   Foreground="{DynamicResource App.TextPrimaryBrush}"
                    Text="{Binding Email}" Margin="0,0,0,10"/>
 
           <TextBox Grid.Row="3" Grid.Column="0"
                    materialDesign:HintAssist.Hint="Teléfono"
+                   Foreground="{DynamicResource App.TextPrimaryBrush}"
                    Text="{Binding Phone}" Margin="0,0,8,10"/>
           <TextBox Grid.Row="3" Grid.Column="1"
                    materialDesign:HintAssist.Hint="Usuario"
+                   Foreground="{DynamicResource App.TextPrimaryBrush}"
                    Text="{Binding Username}" Margin="8,0,0,10"/>
 
           <PasswordBox Grid.Row="4" Grid.Column="0" Margin="0,0,8,10"
                        materialDesign:HintAssist.Hint="Contraseña"/>
           <TextBox Grid.Row="4" Grid.Column="1" Margin="8,0,0,10"
                    materialDesign:HintAssist.Hint="Dirección"
+                   Foreground="{DynamicResource App.TextPrimaryBrush}"
                    Text="{Binding Address}"/>
 
           <ComboBox Grid.Row="5" Grid.ColumnSpan="2" Margin="0,0,0,10"

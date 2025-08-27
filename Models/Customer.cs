@@ -14,6 +14,6 @@ public partial class Customer : ObservableObject
     public string Phone     { get; set; } = "";
     public string Address   { get; set; } = "";
     public Gender Gender    { get; set; }
-
+    public bool IsExpanded { get; set; }
     public string FullName => $"{FirstName} {LastName}".Trim();
 }

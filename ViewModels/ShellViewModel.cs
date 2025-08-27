@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
+using library;
 using library.Abstractions;
 using library.Models;
 using library.ViewModels;
@@ -13,7 +14,10 @@ public partial class ShellViewModel : ObservableObject
     [ObservableProperty] private bool isSidebarExpanded = true;
     [ObservableProperty] private string? globalSearch;
 
+    [ObservableProperty] private bool isDarkTheme;
+    
     // Instancias únicas (inyectables si usas DI)
+    
     public DashboardViewModel Dashboard { get; } = new();
     public CustomersViewModel Customers { get; } = new();
     public BooksViewModel     Books     { get; } = new();
@@ -72,4 +76,6 @@ public partial class ShellViewModel : ObservableObject
 
     // Navegación directa desde botones internos
     [RelayCommand] public void Navigate(object vm) => CurrentViewModel = vm;
+    
+
 }

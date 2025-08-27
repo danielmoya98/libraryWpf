@@ -60,4 +60,14 @@
   <SolidColorBrush x:Key="PageActiveBg" Color="{DynamicResource App.PrimaryColor}"/>
   <SolidColorBrush x:Key="PageActiveFg" Color="#FFFFFFFF"/>
 
+  <SolidColorBrush x:Key="Brush.Card"        Color="#1E2633"/>
+  <SolidColorBrush x:Key="Brush.Border"      Color="#2A3444"/>
+  <SolidColorBrush x:Key="Brush.Separator"   Color="#2A3444"/>
+  <SolidColorBrush x:Key="Brush.Text"        Color="#F3F6FB"/>
+  <SolidColorBrush x:Key="Brush.TextMuted"   Color="#A9B4C2"/>
+  <SolidColorBrush x:Key="Brush.Hover"       Color="#263140"/>
+  <SolidColorBrush x:Key="Brush.Primary"     Color="#7B8AFF"/>
+  <SolidColorBrush x:Key="Brush.PrimarySoft" Color="#273459"/> <!-- activo en sidebar -->
+
+  
 </ResourceDictionary>

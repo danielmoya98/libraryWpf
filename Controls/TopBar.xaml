@@ -8,17 +8,19 @@
              SnapsToDevicePixels="True"
              Background="Transparent">
 
-    <!-- VM local (si usas inyección, quítalo y setea DataContext desde el Shell) -->
+    <!-- VM local (si inyectas desde el Shell, quita este bloque) -->
     <UserControl.DataContext>
         <vm:TopBarViewModel />
     </UserControl.DataContext>
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <converters:BoolToIconConverter x:Key="BoolToIcon" xmlns:converters="clr-namespace:library.Converters" />
+        <converters:BoolToTextConverter x:Key="BoolToText" xmlns:converters="clr-namespace:library.Converters" />
 
         <!-- Botón de icono para el header -->
         <Style x:Key="HeaderIconButton" TargetType="Button">
-            <Setter Property="Foreground" Value="#99000000" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.TextMuted}" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Width" Value="40" />
             <Setter Property="Height" Value="40" />
@@ -31,10 +33,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="bg" Property="Background" Value="#0D000000" />
+                                <Setter TargetName="bg" Property="Background" Value="{DynamicResource Brush.Hover}" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="bg" Property="Background" Value="#1A000000" />
+                                <Setter TargetName="bg" Property="Background" Value="{DynamicResource Brush.Hover}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -48,54 +50,54 @@
         UniformCornerRadius="10"
         Padding="5"
         Margin="0 8 8 8"
-        Background="White"
-        BorderBrush="{StaticResource Brush.Border}">
+        Background="{DynamicResource Brush.Card}"
+        BorderBrush="{DynamicResource Brush.Border}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <!-- SEARCH PILL dentro de una Material Card con esquinas redondeadas -->
-
-
+            <!-- SEARCH PILL -->
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />   <!-- leading icon area -->
-                    <ColumnDefinition Width="*" />    <!-- text -->
-                    <ColumnDefinition Width="44" />   <!-- trailing clear -->
+                    <ColumnDefinition Width="Auto" />   <!-- icono -->
+                    <ColumnDefinition Width="*" />      <!-- texto -->
+                    <ColumnDefinition Width="44" />     <!-- limpiar -->
                 </Grid.ColumnDefinitions>
 
-                <!-- Icono de búsqueda (estilo botón para mejor hit-area) -->
+                <!-- Icono de búsqueda -->
                 <Button Grid.Column="0"
                         ToolTip="Buscar"
+                        Style="{StaticResource HeaderIconButton}"
                         Background="Transparent"
                         BorderThickness="0">
-                    <Border CornerRadius="12" Background="Transparent">
-                        <mah:PackIconMaterial Kind="Magnify" Width="15" Height="15" VerticalAlignment="Center"
-                                              HorizontalAlignment="Center" Foreground="#99000000" />
-                    </Border>
+                    <mah:PackIconMaterial Kind="Magnify" Width="15" Height="15"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"
+                                          Foreground="{DynamicResource Brush.TextMuted}" />
                 </Button>
 
-                <!-- TextBox sin bordes, usa Hint de MaterialDesign -->
+                <!-- Caja de búsqueda -->
                 <TextBox x:Name="SearchBox" Grid.Column="1"
                          BorderThickness="0" Background="Transparent"
                          VerticalContentAlignment="Center" Padding="0"
-                         FontSize="14" Foreground="#DD000000"
+                         FontSize="14"
+                         Foreground="{DynamicResource Brush.Text}"
                          materialDesign:HintAssist.Hint="Search (Ctrl+/)"
                          materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
                          materialDesign:TextFieldAssist.HasClearButton="False"
                          Text="{Binding DataContext.GlobalSearch,
-                 RelativeSource={RelativeSource AncestorType=Window},
-                 UpdateSourceTrigger=PropertyChanged}"/>
+                                        RelativeSource={RelativeSource AncestorType=Window},
+                                        UpdateSourceTrigger=PropertyChanged}" />
 
-                <!-- Botón limpiar (solo visible cuando hay texto) -->
+                <!-- Botón limpiar -->
                 <Button Grid.Column="2"
                         Command="{Binding ClearSearchCommand}"
                         Background="Transparent" BorderThickness="0"
                         Width="44" Height="44">
                     <Button.Style>
-                        <Style TargetType="Button" BasedOn="{x:Null}">
+                        <Style TargetType="Button" BasedOn="{StaticResource HeaderIconButton}">
                             <Setter Property="Visibility" Value="Visible" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ElementName=SearchBox, Path=Text}" Value="">
@@ -107,29 +109,35 @@
                             </Style.Triggers>
                         </Style>
                     </Button.Style>
-                    <Border CornerRadius="12" Background="Transparent">
-                        <mah:PackIconMaterial Kind="CloseCircleOutline" Width="18" Height="18"
-                                              VerticalAlignment="Center" HorizontalAlignment="Center"
-                                              Foreground="#99000000" />
-                    </Border>
+                    <mah:PackIconMaterial Kind="CloseCircleOutline" Width="18" Height="18"
+                                          VerticalAlignment="Center" HorizontalAlignment="Center"
+                                          Foreground="{DynamicResource Brush.TextMuted}" />
                 </Button>
             </Grid>
-
 
             <!-- ==== ACCIONES DERECHA ==== -->
             <StackPanel Grid.Column="1" Orientation="Horizontal"
                         VerticalAlignment="Center" Margin="25,0,25,0">
 
-
-                <!-- Modo oscuro (placeholder) -->
-                <Button Style="{StaticResource HeaderIconButton}">
-                    <mah:PackIconMaterial Kind="WeatherNight" Width="15" Height="15" />
+                <!-- Toggle tema -->
+                <Button Command="{Binding ToggleThemeCommand}" Style="{StaticResource HeaderIconButton}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <mah:PackIconMaterial Width="18" Height="18"
+                                              Foreground="{DynamicResource Brush.Text}"
+                                              Kind="{Binding IsDarkTheme, Converter={StaticResource BoolToIcon},
+                                                             ConverterParameter='WeatherNight|WhiteBalanceSunny'}" />
+                        <TextBlock Margin="6,0,0,0"
+                                   Foreground="{DynamicResource Brush.Text}"
+                                   Text="{Binding IsDarkTheme, Converter={StaticResource BoolToText},
+                                                  ConverterParameter='Modo claro|Modo oscuro'}" />
+                    </StackPanel>
                 </Button>
 
-                <!-- Notificaciones con badge rojo -->
+                <!-- Notificaciones -->
                 <Grid>
                     <Button Style="{StaticResource HeaderIconButton}" Command="{Binding OpenNotificationsCommand}">
-                        <mah:PackIconMaterial Kind="BellOutline" Width="15" Height="15" />
+                        <mah:PackIconMaterial Kind="BellOutline" Width="15" Height="15"
+                                              Foreground="{DynamicResource Brush.Text}" />
                     </Button>
                     <Border Background="#FFEB5757" CornerRadius="8"
                             MinWidth="15" Height="15"

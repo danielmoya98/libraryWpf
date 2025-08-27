@@ -1,3 +1,4 @@
+<!-- Controls/ChartSummary.xaml -->
 <UserControl x:Class="library.Controls.ChartSummary"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -21,7 +22,7 @@
       </ctrls:ChartCard>
     </DataTemplate>
 
-    <!-- Pie/Donut -->
+    <!-- Pie / Donut -->
     <DataTemplate DataType="{x:Type cdef:PieChartDef}">
       <ctrls:ChartCard Title="{Binding Title}">
         <ctrls:ChartCard.ChartContent>
@@ -32,20 +33,21 @@
       </ctrls:ChartCard>
     </DataTemplate>
 
+    <!-- Espaciado entre tarjetas -->
     <Style TargetType="ContentPresenter">
       <Setter Property="Margin" Value="2"/>
       <Setter Property="HorizontalAlignment" Value="Stretch"/>
     </Style>
   </UserControl.Resources>
 
-  <!-- 2 por fila (>=1200px); 1 por fila debajo -->
+  <!-- Grid responsivo controlado por tus breakpoints -->
   <ItemsControl ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource AncestorType=UserControl}}">
     <ItemsControl.ItemsPanel>
       <ItemsPanelTemplate>
         <UniformGrid
           layout:AdaptiveUniformGrid.Breakpoints="{Binding
-        RelativeSource={RelativeSource AncestorType=UserControl},
-        Path=Breakpoints}"/>
+              RelativeSource={RelativeSource AncestorType=UserControl},
+              Path=Breakpoints}"/>
       </ItemsPanelTemplate>
     </ItemsControl.ItemsPanel>
   </ItemsControl>

@@ -10,17 +10,18 @@
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <!-- Tus brushes/estilos base -->
+        <!-- Tus estilos de tabla (ya referenciados a llaves dinámicas) -->
         <ResourceDictionary Source="../Resources/Themes/CustomersTable.Styles.xaml"/>
       </ResourceDictionary.MergedDictionaries>
 
       <converters:SafeImageSourceConverter x:Key="SafeImg"/>
       <BooleanToVisibilityConverter x:Key="BoolToVis"/>
 
-      <!-- Tarjeta de sugerencia (stretch) -->
+      <!-- Card de sugerencia -->
       <DataTemplate x:Key="SuggestionCardTemplate">
         <Border Padding="12" Margin="8,6" CornerRadius="12"
-                Background="White" BorderBrush="#E5E9F0" BorderThickness="1"
+                Background="{DynamicResource App.CardBrush}"
+                BorderBrush="{DynamicResource App.BorderBrush}" BorderThickness="1"
                 HorizontalAlignment="Stretch">
           <Grid>
             <Grid.ColumnDefinitions>
@@ -30,7 +31,7 @@
 
             <!-- Cover -->
             <Border Width="56" Height="84" CornerRadius="6"
-                    BorderBrush="#E2E8F0" BorderThickness="1">
+                    BorderBrush="{DynamicResource App.DividerBrush}" BorderThickness="1">
               <Border.Background>
                 <ImageBrush Stretch="UniformToFill"
                             ImageSource="{Binding CoverPath, Converter={StaticResource SafeImg}}"/>
@@ -40,13 +41,19 @@
             <!-- Info + Rating + Botón -->
             <StackPanel Grid.Column="1" Margin="12,2,0,2">
               <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="14"
+                         Foreground="{DynamicResource App.TextPrimaryBrush}"
                          TextTrimming="CharacterEllipsis"/>
-              <TextBlock Text="{Binding Author}" Foreground="#64748B" FontSize="12"
-                         Margin="0,2,0,6" TextTrimming="CharacterEllipsis"/>
+              <TextBlock Text="{Binding Author}" FontSize="12" Margin="0,2,0,6"
+                         Foreground="{DynamicResource App.TextSecondaryBrush}"
+                         TextTrimming="CharacterEllipsis"/>
 
               <StackPanel Orientation="Horizontal">
-                <mah:PackIconMaterial Kind="Star" Width="14" Height="14" Foreground="#F59E0B" Margin="0,0,6,0"/>
-                <TextBlock Text="{Binding Rating, StringFormat={}{0:0.0}}" Foreground="#111827" FontSize="12"/>
+                <mah:PackIconMaterial Kind="Star" Width="14" Height="14"
+                                      Foreground="{DynamicResource App.WarningBrush}"
+                                      Margin="0,0,6,0"/>
+                <TextBlock Text="{Binding Rating, StringFormat={}{0:0.0}}"
+                           Foreground="{DynamicResource App.TextPrimaryBrush}"
+                           FontSize="12"/>
               </StackPanel>
 
               <Button Margin="0,8,0,0" Padding="10,6" MinWidth="120" HorizontalAlignment="Left"
@@ -71,10 +78,11 @@
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
 
-          <!-- Portada centrada verticalmente -->
+          <!-- Portada centrada -->
           <Grid Grid.Column="0" VerticalAlignment="Center">
             <Border Width="220" Height="320" CornerRadius="10"
-                    BorderBrush="#E2E8F0" BorderThickness="1" Background="#F3F6FA">
+                    BorderBrush="{DynamicResource App.DividerBrush}" BorderThickness="1"
+                    Background="{DynamicResource App.ElevatedBrush}">
               
             </Border>
           </Grid>
@@ -100,17 +108,21 @@
               <!-- Row 0 -->
               <TextBox Grid.Row="0" Grid.Column="0" Margin="0,0,8,10"
                        materialDesign:HintAssist.Hint="ISBN"
+                       Foreground="{DynamicResource App.TextPrimaryBrush}"
                        Text="{Binding Isbn}"/>
               <TextBox Grid.Row="0" Grid.Column="1" Margin="8,0,0,10"
                        materialDesign:HintAssist.Hint="Año"
+                       Foreground="{DynamicResource App.TextPrimaryBrush}"
                        Text="{Binding Year}"/>
 
               <!-- Row 1 -->
               <TextBox Grid.Row="1" Grid.Column="0" Margin="0,0,8,10"
                        materialDesign:HintAssist.Hint="Título"
+                       Foreground="{DynamicResource App.TextPrimaryBrush}"
                        Text="{Binding Title}"/>
               <TextBox Grid.Row="1" Grid.Column="1" Margin="8,0,0,10"
                        materialDesign:HintAssist.Hint="Cantidad (stock)"
+                       Foreground="{DynamicResource App.TextPrimaryBrush}"
                        Text="{Binding Stock, UpdateSourceTrigger=PropertyChanged}"/>
 
               <!-- Row 2: Autor + Nuevo / Calificación -->
@@ -121,6 +133,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0"
                          materialDesign:HintAssist.Hint="Autor"
+                         Foreground="{DynamicResource App.TextPrimaryBrush}"
                          Text="{Binding Author}"/>
                 <Button Grid.Column="1" Margin="10,0,0,0"
                         Command="{Binding CreateAuthorCommand}">
@@ -132,6 +145,7 @@
               </Grid>
               <TextBox Grid.Row="2" Grid.Column="1" Margin="8,0,0,10"
                        materialDesign:HintAssist.Hint="Calificación"
+                       Foreground="{DynamicResource App.TextPrimaryBrush}"
                        Text="{Binding Rating}"/>
 
               <!-- Row 3: Género / Disponible -->
@@ -142,12 +156,14 @@
                         materialDesign:HintAssist.Hint="Género"/>
               <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="8,6,0,10">
                 <CheckBox IsChecked="{Binding Available}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                <TextBlock Text="Disponible" VerticalAlignment="Center"/>
+                <TextBlock Text="Disponible" VerticalAlignment="Center"
+                           Foreground="{DynamicResource App.TextPrimaryBrush}"/>
               </StackPanel>
 
               <!-- Row 4: Editorial / Estado -->
               <TextBox Grid.Row="4" Grid.Column="0" Margin="0,0,8,10"
                        materialDesign:HintAssist.Hint="Editorial"
+                       Foreground="{DynamicResource App.TextPrimaryBrush}"
                        Text="{Binding Publisher}"/>
               <ComboBox Grid.Row="4" Grid.Column="1" Margin="8,0,0,10"
                         ItemsSource="{Binding ConditionItems}"
@@ -158,15 +174,17 @@
               <!-- Row 5: URL imagen -->
               <TextBox Grid.Row="5" Grid.ColumnSpan="2" Margin="0,0,0,10"
                        materialDesign:HintAssist.Hint="URL de la imagen"
+                       Foreground="{DynamicResource App.TextPrimaryBrush}"
                        Text="{Binding CoverUrl, UpdateSourceTrigger=PropertyChanged}"/>
 
               <!-- Row 6: Sinopsis -->
               <TextBox Grid.Row="6" Grid.ColumnSpan="2" Height="100"
                        AcceptsReturn="True" TextWrapping="Wrap"
                        materialDesign:HintAssist.Hint="Sinopsis"
+                       Foreground="{DynamicResource App.TextPrimaryBrush}"
                        Text="{Binding Synopsis}"/>
 
-              <!-- Row 7: Distribución por estado (salta al paso 3) -->
+              <!-- Row 7: Distribución -->
               <Button Grid.Row="7" Grid.ColumnSpan="2" Margin="0,10,0,0"
                       Command="{Binding OpenDistributionCommand}">
                 <StackPanel Orientation="Horizontal">
@@ -188,47 +206,60 @@
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
 
-          <!-- Campos de distribución -->
+          <!-- Campos -->
           <StackPanel Grid.Column="0">
             <TextBox Margin="0,0,0,10" materialDesign:HintAssist.Hint="Nuevo"
+                     Foreground="{DynamicResource App.TextPrimaryBrush}"
                      Text="{Binding DistNew, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Margin="0,0,0,10" materialDesign:HintAssist.Hint="Usado"
+                     Foreground="{DynamicResource App.TextPrimaryBrush}"
                      Text="{Binding DistUsed, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Margin="0,0,0,10" materialDesign:HintAssist.Hint="Desgastado"
+                     Foreground="{DynamicResource App.TextPrimaryBrush}"
                      Text="{Binding DistWorn, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Margin="0,0,0,10" materialDesign:HintAssist.Hint="Dañado"
+                     Foreground="{DynamicResource App.TextPrimaryBrush}"
                      Text="{Binding DistDamaged, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Margin="0,0,0,10" materialDesign:HintAssist.Hint="Reparado"
+                     Foreground="{DynamicResource App.TextPrimaryBrush}"
                      Text="{Binding DistRepaired, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Margin="0,0,0,10" materialDesign:HintAssist.Hint="En restauración"
+                     Foreground="{DynamicResource App.TextPrimaryBrush}"
                      Text="{Binding DistRestoring, UpdateSourceTrigger=PropertyChanged}"/>
           </StackPanel>
 
           <!-- Resumen -->
-          <Border Grid.Column="2" Padding="16" CornerRadius="10" BorderBrush="#E5E9F0" BorderThickness="1">
+          <Border Grid.Column="2" Padding="16" CornerRadius="10"
+                  Background="{DynamicResource App.CardBrush}"
+                  BorderBrush="{DynamicResource App.BorderBrush}" BorderThickness="1">
             <StackPanel>
-              <TextBlock Text="Resumen" FontWeight="SemiBold" Margin="0,0,0,10"/>
+              <TextBlock Text="Resumen" FontWeight="SemiBold" Margin="0,0,0,10"
+                         Foreground="{DynamicResource App.TextPrimaryBrush}"/>
 
               <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
-                <TextBlock Text="Stock declarado:" Width="150" Foreground="#64748B"/>
-                <TextBlock Text="{Binding Stock, Mode=OneWay}" FontWeight="SemiBold"/>
+                <TextBlock Text="Stock declarado:" Width="150"
+                           Foreground="{DynamicResource App.TextSecondaryBrush}"/>
+                <TextBlock Text="{Binding Stock, Mode=OneWay}" FontWeight="SemiBold"
+                           Foreground="{DynamicResource App.TextPrimaryBrush}"/>
               </StackPanel>
 
               <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
-                <TextBlock Text="Total asignado:" Width="150" Foreground="#64748B"/>
-                <!-- OneWay: propiedad de solo lectura -->
-                <TextBlock Text="{Binding DistTotal, Mode=OneWay}" FontWeight="SemiBold"/>
+                <TextBlock Text="Total asignado:" Width="150"
+                           Foreground="{DynamicResource App.TextSecondaryBrush}"/>
+                <TextBlock Text="{Binding DistTotal, Mode=OneWay}" FontWeight="SemiBold"
+                           Foreground="{DynamicResource App.TextPrimaryBrush}"/>
               </StackPanel>
 
               <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                <TextBlock Text="Diferencia:" Width="150" Foreground="#64748B"/>
-                <!-- OneWay -->
-                <TextBlock Text="{Binding DistDiff, Mode=OneWay}" FontWeight="SemiBold"/>
+                <TextBlock Text="Diferencia:" Width="150"
+                           Foreground="{DynamicResource App.TextSecondaryBrush}"/>
+                <TextBlock Text="{Binding DistDiff, Mode=OneWay}" FontWeight="SemiBold"
+                           Foreground="{DynamicResource App.TextPrimaryBrush}"/>
               </StackPanel>
 
               <TextBlock Margin="0,8,0,0" FontSize="12"
                          Text="La diferencia debe ser 0 para poder guardar."
-                         Foreground="#9AA3AE"/>
+                         Foreground="{DynamicResource App.TextMutedBrush}"/>
             </StackPanel>
           </Border>
         </Grid>
@@ -238,7 +269,7 @@
   </UserControl.Resources>
 
   <!-- ========== CONTENT ========== -->
-  <Border Padding="22" Background="White">
+  <Border Padding="22" Background="{DynamicResource App.CardBrush}">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
@@ -249,17 +280,19 @@
 
       <!-- Título -->
       <TextBlock Grid.Row="0" Text="Agregar libro"
-                 FontSize="20" FontWeight="SemiBold" Foreground="#243147" Margin="4,0,4,10"/>
+                 FontSize="20" FontWeight="SemiBold"
+                 Foreground="{DynamicResource App.TextPrimaryBrush}"
+                 Margin="4,0,4,10"/>
 
       <!-- Stepper -->
       <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
         <TextBlock Text="1. Buscar" Margin="0,0,10,0" VerticalAlignment="Center">
           <TextBlock.Style>
             <Style TargetType="TextBlock">
-              <Setter Property="Foreground" Value="#475569"/>
+              <Setter Property="Foreground" Value="{DynamicResource App.TextSecondaryBrush}"/>
               <Style.Triggers>
                 <DataTrigger Binding="{Binding StepIndex}" Value="0">
-                  <Setter Property="Foreground" Value="#5B6BFE"/>
+                  <Setter Property="Foreground" Value="{DynamicResource App.PrimaryBrush}"/>
                 </DataTrigger>
               </Style.Triggers>
             </Style>
@@ -267,15 +300,15 @@
         </TextBlock>
 
         <mah:PackIconMaterial Kind="ChevronRight" Width="18" Height="18" VerticalAlignment="Center"
-                              Foreground="#9AA3AE" Margin="0,0,8,0"/>
+                              Foreground="{DynamicResource App.TextMutedBrush}" Margin="0,0,8,0"/>
 
         <TextBlock Text="2. Detalles" Margin="0,0,10,0" VerticalAlignment="Center">
           <TextBlock.Style>
             <Style TargetType="TextBlock">
-              <Setter Property="Foreground" Value="#475569"/>
+              <Setter Property="Foreground" Value="{DynamicResource App.TextSecondaryBrush}"/>
               <Style.Triggers>
                 <DataTrigger Binding="{Binding StepIndex}" Value="1">
-                  <Setter Property="Foreground" Value="#5B6BFE"/>
+                  <Setter Property="Foreground" Value="{DynamicResource App.PrimaryBrush}"/>
                 </DataTrigger>
               </Style.Triggers>
             </Style>
@@ -283,15 +316,15 @@
         </TextBlock>
 
         <mah:PackIconMaterial Kind="ChevronRight" Width="18" Height="18" VerticalAlignment="Center"
-                              Foreground="#9AA3AE" Margin="0,0,8,0"/>
+                              Foreground="{DynamicResource App.TextMutedBrush}" Margin="0,0,8,0"/>
 
         <TextBlock Text="3. Distribución" VerticalAlignment="Center">
           <TextBlock.Style>
             <Style TargetType="TextBlock">
-              <Setter Property="Foreground" Value="#475569"/>
+              <Setter Property="Foreground" Value="{DynamicResource App.TextSecondaryBrush}"/>
               <Style.Triggers>
                 <DataTrigger Binding="{Binding StepIndex}" Value="2">
-                  <Setter Property="Foreground" Value="#5B6BFE"/>
+                  <Setter Property="Foreground" Value="{DynamicResource App.PrimaryBrush}"/>
                 </DataTrigger>
               </Style.Triggers>
             </Style>
@@ -310,11 +343,14 @@
             </Grid.RowDefinitions>
 
             <!-- Buscador -->
-            <Border Grid.Row="0" Background="#F1F5F9" CornerRadius="10" Padding="12"
-                    BorderBrush="#E2E8F0" BorderThickness="1" Margin="0,0,0,10">
+            <Border Grid.Row="0" CornerRadius="10" Padding="12" Margin="0,0,0,10"
+                    Background="{DynamicResource App.ElevatedBrush}"
+                    BorderBrush="{DynamicResource App.DividerBrush}" BorderThickness="1">
               <DockPanel LastChildFill="True">
-                <mah:PackIconMaterial Kind="Magnify" Width="20" Height="20" Foreground="#64748B" Margin="0,0,8,0"/>
-                <TextBox BorderThickness="0" Background="Transparent" Foreground="#111827"
+                <mah:PackIconMaterial Kind="Magnify" Width="20" Height="20"
+                                      Foreground="{DynamicResource App.IconBrush}" Margin="0,0,8,0"/>
+                <TextBox BorderThickness="0" Background="Transparent"
+                         Foreground="{DynamicResource App.TextPrimaryBrush}"
                          FontSize="14"
                          Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                          materialDesign:HintAssist.Hint="Buscar título, autor o ISBN…"/>
@@ -352,7 +388,7 @@
       <!-- Footer -->
       <DockPanel Grid.Row="3" LastChildFill="False" Margin="0,16,0,0">
 
-        <!-- Atrás (visible en pasos 1 y 2) -->
+        <!-- Atrás -->
         <Button DockPanel.Dock="Left" Command="{Binding BackCommand}">
           <Button.Style>
             <Style TargetType="Button">
@@ -373,7 +409,7 @@
           </StackPanel>
         </Button>
 
-        <!-- Guardar (visible en pasos 1 y 2; Step 2 exige diferencia=0) -->
+        <!-- Guardar -->
         <Button DockPanel.Dock="Right"
                 IsEnabled="{Binding CanSave}"
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"

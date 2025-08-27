@@ -21,6 +21,8 @@ public partial class CustomersViewModel : ObservableObject, ISearchable
     public IAsyncRelayCommand<Customer?> EditCustomerCommand { get; }
     public IRelayCommand<Customer?> DeleteCustomerCommand { get; }
 
+    public bool IsCardView { get; set; }
+    
     public ObservableCollection<DashStat> Stats { get; }
     public ObservableCollection<Customer> Customers { get; }
 
