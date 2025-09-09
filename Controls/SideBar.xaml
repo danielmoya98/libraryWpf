@@ -215,12 +215,24 @@
         </StackPanel>
       </ScrollViewer>
 
-      <!-- Footer -->
+           <!-- Footer -->
       <Border Grid.Row="2"
               Background="{DynamicResource Brush.Card}"
               BorderBrush="{DynamicResource Brush.Separator}" BorderThickness="1,1,0,0"
               CornerRadius="0,0,14,14" Padding="10">
         <Grid>
+          <Grid.Style>
+            <!-- Ocultar footer si no hay sesión iniciada -->
+            <Style TargetType="Grid">
+              <Setter Property="Visibility" Value="Visible"/>
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsLoggedIn}" Value="False">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Grid.Style>
+
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*" />
@@ -228,14 +240,35 @@
 
           <Ellipse Width="30" Height="30"  Margin="5 0 0 0">
             <Ellipse.Fill>
+              <!-- Si luego tienes CurrentUser.AvatarUri, puedes enlazar aquí.
+                   Por ahora dejamos la imagen estática existente -->
               <StaticResource ResourceKey="AvatarBrush"/>
             </Ellipse.Fill>
           </Ellipse>
 
           <StackPanel Grid.Column="1" Margin="8,0,0,0"
                       Visibility="{Binding ElementName=Shell, Path=ActualWidth, Converter={StaticResource CollapseToVis}}">
-            <TextBlock Text="Franz Molina" FontWeight="SemiBold" Foreground="{DynamicResource Brush.Text}"/>
-            <TextBlock Text="laspitter@gmail.com" Foreground="{DynamicResource Brush.TextMuted}" FontSize="11"/>
+            <!-- Nombre del usuario -->
+            <TextBlock Text="{Binding CurrentUser.DisplayName}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource Brush.Text}"
+                       TextTrimming="CharacterEllipsis"
+                       ToolTip="{Binding CurrentUser.DisplayName}"/>
+
+            <!-- Email (o lo que tengas disponible) -->
+            <TextBlock Text="{Binding CurrentUser.Email}"
+                       Foreground="{DynamicResource Brush.TextMuted}"
+                       FontSize="11"
+                       TextTrimming="CharacterEllipsis"
+                       ToolTip="{Binding CurrentUser.Email}"/>
+
+            <!-- Rol opcional, si tienes RolDisplay -->
+            <!--
+            <TextBlock Text="{Binding CurrentUser.RolDisplay}"
+                       Foreground="{DynamicResource Brush.TextMuted}"
+                       FontSize="10"
+                       Margin="0,2,0,0"/>
+            -->
           </StackPanel>
         </Grid>
       </Border>

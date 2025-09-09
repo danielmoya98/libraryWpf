@@ -10,6 +10,7 @@
         xmlns:orders="clr-namespace:library.Views.Orders"
         xmlns:auth="clr-namespace:library.Views.Auth"
         xmlns:converters="clr-namespace:library.Converters"
+        xmlns:global="clr-namespace:"
         Background="{DynamicResource App.BackgroundBrush}"
         Foreground="{DynamicResource App.TextPrimaryBrush}"
         MinWidth="800"
@@ -18,7 +19,9 @@
         SnapsToDevicePixels="True"
         Title="Biblioverso - Sistema de Gestión Bibliotecaria"
         WindowState="Maximized">
-
+    
+    
+    
     <Window.Resources>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVis" />
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
@@ -74,17 +77,8 @@
                     <!-- Stack Panel para evitar conflictos de Child -->
                     <StackPanel>
                         <!-- ContentPresenter para las vistas -->
-                        <ContentPresenter Content="{Binding CurrentViewModel}">
-                            <ContentPresenter.Style>
-                                <Style TargetType="ContentPresenter">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding CurrentViewModel}" Value="{x:Null}">
-                                            <Setter Property="Visibility" Value="Collapsed" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ContentPresenter.Style>
+                        <ContentPresenter  Content="{Binding CurrentViewModel}">
+                          
                         </ContentPresenter>
 
                         <!-- Mensaje de bienvenida cuando no hay vista seleccionada -->

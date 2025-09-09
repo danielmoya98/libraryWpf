@@ -92,8 +92,7 @@ public partial class ShellViewModel : ObservableObject
     private void OnUserLoggedIn(Usuario usuario)
     {
         UpdateAuthenticationState();
-
-        // Navegar al dashboard por defecto
+        
         NavigateToDashboard();
     }
 
@@ -112,6 +111,12 @@ public partial class ShellViewModel : ObservableObject
         {
             WelcomeMessage = $"Bienvenido, {CurrentUser.DisplayName}";
             TopBar.UpdateUserInfo(CurrentUser);
+
+            // Asegura que siempre haya una vista visible tras el login
+            if (CurrentViewModel == null)
+            {
+                NavigateToDashboard();
+            }
         }
         else
         {
