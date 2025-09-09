@@ -8,10 +8,7 @@
              SnapsToDevicePixels="True"
              Background="Transparent">
 
-    <!-- VM local (si inyectas desde el Shell, quita este bloque) -->
-    <UserControl.DataContext>
-        <vm:TopBarViewModel />
-    </UserControl.DataContext>
+    
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
@@ -122,22 +119,24 @@
                 <!-- Toggle tema -->
                 <Button Command="{Binding ToggleThemeCommand}" Style="{StaticResource HeaderIconButton}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <mah:PackIconMaterial Width="18" Height="18"
+                        <mah:PackIconMaterial Width="15" Height="15"
                                               Foreground="{DynamicResource Brush.Text}"
                                               Kind="{Binding IsDarkTheme, Converter={StaticResource BoolToIcon},
                                                              ConverterParameter='WeatherNight|WhiteBalanceSunny'}" />
-                        <TextBlock Margin="6,0,0,0"
-                                   Foreground="{DynamicResource Brush.Text}"
-                                   Text="{Binding IsDarkTheme, Converter={StaticResource BoolToText},
-                                                  ConverterParameter='Modo claro|Modo oscuro'}" />
                     </StackPanel>
                 </Button>
 
+                <!-- Perfil usuario -->
+                <Button Style="{StaticResource HeaderIconButton}" Command="{Binding EditUserCommand}" CommandParameter="{Binding CurrentUser}">
+                    <mah:PackIconMaterial Kind="FaceManProfile" Width="15" Height="15" />
+                </Button>
+                
                 <!-- Notificaciones -->
                 <Grid>
                     <Button Style="{StaticResource HeaderIconButton}" Command="{Binding OpenNotificationsCommand}">
                         <mah:PackIconMaterial Kind="BellOutline" Width="15" Height="15"
-                                              Foreground="{DynamicResource Brush.Text}" />
+                                              Foreground="{DynamicResource Brush.Text}"
+                                              />
                     </Button>
                     <Border Background="#FFEB5757" CornerRadius="8"
                             MinWidth="15" Height="15"

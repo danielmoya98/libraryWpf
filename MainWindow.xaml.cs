@@ -1,24 +1,41 @@
-﻿using System.Text;
+﻿using library.Models;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace library;
-
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
-public partial class MainWindow : Window
+namespace library
 {
-    public MainWindow()
+    public partial class MainWindow : Window
     {
-        InitializeComponent();
-        DataContext = new ShellViewModel();
+        private readonly ShellViewModel _viewModel;
+
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            try
+            {
+                _viewModel = App.GetService<ShellViewModel>();
+                DataContext = _viewModel;
+            }
+            catch (System.Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error inicializando MainWindow: {ex.Message}");
+
+                // Cerrar la aplicación si no se puede inicializar
+                Application.Current.Shutdown();
+            }
+        }
+
+        // Método público para navegación desde otros componentes
+        public void NavigateToMainContent(Usuario usuario)
+        {
+            // Este método se puede llamar desde el LoginView o desde otros lugares
+            _viewModel?.NavigateToDashboard();
+        }
+
+        // Métodos públicos para navegación
+        public void NavigateToDashboard() => _viewModel?.NavigateToDashboard();
+        public void NavigateToCustomers() => _viewModel?.NavigateToCustomers();
+        public void NavigateToBooks() => _viewModel?.NavigateToBooks();
+        public void NavigateToOrders() => _viewModel?.NavigateToOrders();
     }
 }

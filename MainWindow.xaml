@@ -2,25 +2,27 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ctrls="clr-namespace:library.Controls"
-        xmlns:global="clr-namespace:"
         xmlns:vm="clr-namespace:library.ViewModels"
         xmlns:dashboard="clr-namespace:library.Views.Dashboard"
         xmlns:customers="clr-namespace:library.Views.Customers"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:books="clr-namespace:library.Views.Books"
         xmlns:orders="clr-namespace:library.Views.Orders"
+        xmlns:auth="clr-namespace:library.Views.Auth"
+        xmlns:converters="clr-namespace:library.Converters"
         Background="{DynamicResource App.BackgroundBrush}"
         Foreground="{DynamicResource App.TextPrimaryBrush}"
         MinWidth="800"
         MinHeight="600"
         UseLayoutRounding="True"
-        SnapsToDevicePixels="True">
-
-    <Window.DataContext>
-        <global:ShellViewModel />
-    </Window.DataContext>
+        SnapsToDevicePixels="True"
+        Title="Biblioverso - Sistema de Gestión Bibliotecaria"
+        WindowState="Maximized">
 
     <Window.Resources>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVis" />
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+
         <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
             <dashboard:DashboardView />
         </DataTemplate>
@@ -33,28 +35,93 @@
         <DataTemplate DataType="{x:Type vm:OrdersViewModel}">
             <orders:OrdersView />
         </DataTemplate>
-
     </Window.Resources>
 
     <materialDesign:DialogHost Identifier="RootDialog" Background="{DynamicResource App.BackgroundBrush}">
 
-
+        <!-- Grid principal que cambia según el estado de autenticación -->
         <Grid Background="{DynamicResource App.BackgroundBrush}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />   <!-- sidebar fijo -->
-                <ColumnDefinition Width="*" />    <!-- área de contenido -->
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />   <!-- fila exclusiva del TopBar -->
-                <RowDefinition Height="*" />      <!-- contenido -->
-            </Grid.RowDefinitions>
 
-            <ctrls:SideBar Grid.RowSpan="2" Grid.Column="0" />
+            <!-- Vista de Login (cuando no está logueado) -->
+            <Grid Visibility="{Binding IsLoggedIn, Converter={StaticResource InverseBoolToVis}}">
+                <auth:LoginView DataContext="{Binding LoginViewModel}" />
+            </Grid>
 
-            <ctrls:TopBar Grid.Column="1" Grid.Row="0" Panel.ZIndex="1" />
+            <!-- Vista principal de la aplicación (cuando está logueado) -->
+            <Grid Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVis}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />   <!-- sidebar fijo -->
+                    <ColumnDefinition Width="*" />    <!-- área de contenido -->
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />   <!-- fila exclusiva del TopBar -->
+                    <RowDefinition Height="*" />      <!-- contenido -->
+                </Grid.RowDefinitions>
 
-            <ContentPresenter Grid.Column="1" Grid.Row="1"
-                              Content="{Binding CurrentViewModel}" />
+                <!-- Sidebar -->
+                <ctrls:SideBar Grid.RowSpan="2" Grid.Column="0"
+                               DataContext="{Binding}" />
+
+                <!-- TopBar -->
+                <ctrls:TopBar Grid.Column="1" Grid.Row="0" Panel.ZIndex="1"
+                              DataContext="{Binding TopBar}" />
+
+                <!-- Área de contenido principal -->
+                <Border Grid.Column="1" Grid.Row="1"
+                        Background="{DynamicResource App.BackgroundBrush}"
+                        Margin="0,1,0,0">
+
+                    <!-- Stack Panel para evitar conflictos de Child -->
+                    <StackPanel>
+                        <!-- ContentPresenter para las vistas -->
+                        <ContentPresenter Content="{Binding CurrentViewModel}">
+                            <ContentPresenter.Style>
+                                <Style TargetType="ContentPresenter">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentViewModel}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentPresenter.Style>
+                        </ContentPresenter>
+
+                        <!-- Mensaje de bienvenida cuando no hay vista seleccionada -->
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentViewModel}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+
+                            <materialDesign:PackIcon Kind="BookOpenVariant"
+                                                     Width="64" Height="64"
+                                                     Foreground="{DynamicResource App.PrimaryBrush}"
+                                                     HorizontalAlignment="Center"
+                                                     Margin="0,0,0,16" />
+
+                            <TextBlock Text="{Binding WelcomeMessage}"
+                                       FontSize="24"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource App.TextPrimaryBrush}"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,8" />
+
+                            <TextBlock Text="Selecciona una opción del menú para comenzar"
+                                       FontSize="14"
+                                       Foreground="{DynamicResource App.TextSecondaryBrush}"
+                                       HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
         </Grid>
     </materialDesign:DialogHost>
 </Window>
